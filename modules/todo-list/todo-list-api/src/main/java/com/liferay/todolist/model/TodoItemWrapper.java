@@ -324,6 +324,11 @@ public class TodoItemWrapper
 		return model.getProgress();
 	}
 
+	@Override
+	public String getProgressBar() {
+		return model.getProgressBar();
+	}
+
 	/**
 	 * Returns the title of this todo item.
 	 *

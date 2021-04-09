@@ -33,4 +33,21 @@ public class TodoItemImpl extends TodoItemBaseImpl {
 	public TodoItemImpl() {
 	}
 
+	public String getProgressBar() {
+		
+		if (this.getProgress() >= 1 || this.getDoneFlag()) {
+			return "■■■■■";
+		} else if (this.getProgress() >= 0.8) {
+			return "■■■■□";
+		} else if (this.getProgress() >= 0.6) {
+			return "■■■□□";
+		} else if (this.getProgress() >= 0.4) {
+			return "■■□□□";
+		} else if (this.getProgress() >= 0.2) {
+			return "■□□□□";
+		} else {
+			return "□□□□□";
+		}
+	}
+
 }

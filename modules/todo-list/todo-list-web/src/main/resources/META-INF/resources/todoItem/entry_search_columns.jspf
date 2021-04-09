@@ -73,7 +73,6 @@
 					<div class="truncate-text">
 
 						<%-- Strip HTML --%>
-
 						<%=HtmlUtil.stripHtml(entry.getDescription(locale))%>
 					</div>
 				</liferay-frontend:vertical-card-footer>
@@ -82,13 +81,19 @@
 	</c:when>
 
 	<%-- Table view --%>
-	<c:otherwise>
-
+	<c:otherwise>	
+        <liferay-ui:search-container-column-text>
+    	   <input name="rowChecker" type="checkbox" <%=entry.getDoneFlag()?"checked":""%> />
+	   </liferay-ui:search-container-column-text>
+       
         <liferay-ui:search-container-column-text href="${viewTodoItemURL}"
             name="title" value="<%= entry.getTitle() %>" />
 
         <liferay-ui:search-container-column-text
             name="description" value="<%= entry.getDescription() %>" />
+            
+        <liferay-ui:search-container-column-text
+            name="progress" value="<%= entry.getProgressBar() %>" />
            
         <liferay-ui:search-container-column-date
             name="dueDate" value="<%= entry.getDueDate() %>" />

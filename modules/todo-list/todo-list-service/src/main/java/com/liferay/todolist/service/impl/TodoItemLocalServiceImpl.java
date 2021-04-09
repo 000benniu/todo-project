@@ -212,7 +212,6 @@ public class TodoItemLocalServiceImpl extends TodoItemLocalServiceBaseImpl {
 //			OrderByComparator<TodoItem> orderByComparator) {
 //
 //		return todoItemPersistence.findByDescription(description, start, end, orderByComparator);
-//	}
 	
 	public List<TodoItem> getTodoItemsByKeywords(long groupId,
 			String keywords,

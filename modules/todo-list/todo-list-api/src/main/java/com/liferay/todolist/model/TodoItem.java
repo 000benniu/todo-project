@@ -56,4 +56,6 @@ public interface TodoItem extends PersistedModel, TodoItemModel {
 
 		};
 
+	public String getProgressBar();
+
 }

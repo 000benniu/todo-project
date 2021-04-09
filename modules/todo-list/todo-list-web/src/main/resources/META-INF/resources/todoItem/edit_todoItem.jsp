@@ -43,7 +43,7 @@
                  </aui:input>
 
                  <%-- Due date field. --%>
-                 <aui:input name="dueDate">
+                 <aui:input name="dueDate" label="dueDate">
                      <aui:validator name="required" />
                  </aui:input>
                  
