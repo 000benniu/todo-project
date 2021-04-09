@@ -1,0 +1,11 @@
+dependencies {
+	compile project(":modules:todo-list:todo-list-api")
+
+	compileOnly group: "com.liferay.portal", name: "release.dxp.api"
+}
+
+buildService {
+	apiDir = "../todo-list-api/src/main/java"
+}
+
+group = "com.liferay.todolist"

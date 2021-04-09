@@ -1,0 +1,10 @@
+Bundle-Name: todo-list-api
+Bundle-SymbolicName: com.liferay.todolist.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.todolist.exception,\
+	com.liferay.todolist.model,\
+	com.liferay.todolist.service,\
+	com.liferay.todolist.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../todo-list-service/service.xml
