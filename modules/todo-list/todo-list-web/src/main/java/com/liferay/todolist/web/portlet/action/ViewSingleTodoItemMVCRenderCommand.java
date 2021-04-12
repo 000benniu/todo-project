@@ -32,10 +32,9 @@ import org.osgi.service.component.annotations.Reference;
 	service = MVCRenderCommand.class
 )
 public class ViewSingleTodoItemMVCRenderCommand implements MVCRenderCommand {
-	
+
 	@Override
-	public String render(RenderRequest renderRequest,
-			RenderResponse renderResponse) throws PortletException {
+	public String render(RenderRequest renderRequest, RenderResponse renderResponse) throws PortletException {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay) renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
@@ -44,22 +43,18 @@ public class ViewSingleTodoItemMVCRenderCommand implements MVCRenderCommand {
 		try {
 
 			// Call the service to get the todoItem.
-
 			TodoItem todoItem = _todoItemService.getTodoItem(todoItemId);
 
 			DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat("EEEEE, MMMMM dd, yyyy",
 					renderRequest.getLocale());
 
 			// Set attributes to the request.
-
 			renderRequest.setAttribute("todoItem", todoItem);
 			renderRequest.setAttribute("dueDate", dateFormat.format(todoItem.getDueDate()));
 			renderRequest.setAttribute("createDate", dateFormat.format(todoItem.getCreateDate()));
 
 			// Set back icon visible.
-
 			PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
-
 			String redirect = renderRequest.getParameter("redirect");
 
 			portletDisplay.setShowBackIcon(true);

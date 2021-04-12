@@ -6,22 +6,18 @@
 
      <%-- View action. --%>
      <portlet:renderURL var="viewTodoItemURL">
-         <portlet:param name="mvcRenderCommandName"
-             value="<%=MVCCommandNames.VIEW_TODOITEM %>" />
+         <portlet:param name="mvcRenderCommandName" value="<%=MVCCommandNames.VIEW_TODOITEM %>" />
          <portlet:param name="redirect" value="${currentURL}" />
          <portlet:param name="todoItemId" value="${todoItem.todoItemId}" />
      </portlet:renderURL>
-
      <liferay-ui:icon message="view" url="${viewTodoItemURL}" />
 
      <%-- Edit action. --%>
      <portlet:renderURL var="editTodoItemURL">
-         <portlet:param name="mvcRenderCommandName"
-             value="<%=MVCCommandNames.EDIT_TODOITEM %>" />
+         <portlet:param name="mvcRenderCommandName" value="<%=MVCCommandNames.EDIT_TODOITEM %>" />
          <portlet:param name="redirect" value="${currentURL}" />
          <portlet:param name="todoItemId" value="${todoItem.todoItemId}" />
      </portlet:renderURL>
-
      <liferay-ui:icon message="edit" url="${editTodoItemURL}" />    
 
      <%-- Delete action. --%>
@@ -29,7 +25,6 @@
          <portlet:param name="redirect" value="${currentURL}" />
          <portlet:param name="todoItemId" value="${todoItem.todoItemId}" />
      </portlet:actionURL>
-
      <liferay-ui:icon-delete url="${deleteTodoItemURL}" />
 
  </liferay-ui:icon-menu>
