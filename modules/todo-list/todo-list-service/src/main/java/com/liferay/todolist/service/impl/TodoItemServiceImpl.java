@@ -71,34 +71,36 @@ public class TodoItemServiceImpl extends TodoItemServiceBaseImpl {
         _portletResourcePermission.check(
             getPermissionChecker(), serviceContext.getScopeGroupId(),
             ActionKeys.ADD_ENTRY);
-        
+		
 		return todoItemLocalService.addTodoItem(groupId, title, descriptionMap, dueDate, serviceContext);
 	}
 
 	public TodoItem deleteTodoItem(long todoItemId) throws PortalException {
-		
-		// Check permission
-		_todoItemModelResourcePermission.check(getPermissionChecker(), todoItemId, ActionKeys.DELETE);
+
+		try {
+			// Check permission
+			_todoItemModelResourcePermission.check(getPermissionChecker(), todoItemId, ActionKeys.DELETE);
+		}catch (PortalException e) {
+			e.printStackTrace();
+			System.out.println("Error=" + e.getMessage());
+		}
 
 		TodoItem todoItem = todoItemLocalService.getTodoItem(todoItemId);
-
 		return todoItemLocalService.deleteTodoItem(todoItem);
 	}
 
 	public TodoItem getTodoItem(long todoItemId) throws PortalException {
-		
-
 		TodoItem todoItem = todoItemLocalService.getTodoItem(todoItemId);
-
+		
 		// Check permission
 		_todoItemModelResourcePermission.check(getPermissionChecker(), todoItem, ActionKeys.VIEW);
-		
+
 		return todoItem;
 	}
 
 	public List<TodoItem> getTodoItemsByGroupId(long groupId) {
 		
-		return todoItemPersistence.findByGroupId(groupId);
+		return todoItemPersistence.filterFindByGroupId(groupId);
 	}
 
 	public List<TodoItem> getTodoItemsByKeywords(long groupId,

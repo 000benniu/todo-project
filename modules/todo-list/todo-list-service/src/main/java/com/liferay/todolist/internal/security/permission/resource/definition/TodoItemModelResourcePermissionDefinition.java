@@ -1,4 +1,4 @@
-package com.liferay.todolist.internal.security.permission.resource.defination;
+package com.liferay.todolist.internal.security.permission.resource.definition;
 import com.liferay.exportimport.kernel.staging.permission.StagingPermission;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
@@ -21,11 +21,11 @@ import org.osgi.service.component.annotations.Reference;
      immediate = true, 
      service = ModelResourcePermissionDefinition.class
  )
-public class TodoItemModelResourcePermissionDefination implements ModelResourcePermissionDefinition<TodoItem>  {
+public class TodoItemModelResourcePermissionDefinition implements ModelResourcePermissionDefinition<TodoItem>  {
 
 	@Override
-	public TodoItem getModel(long primaryKey) throws PortalException {
-		return _todoItemLocalService.getTodoItem(primaryKey);
+	public TodoItem getModel(long todoItemId) throws PortalException {
+		return _todoItemLocalService.getTodoItem(todoItemId);
 	}
 
 	@Override
@@ -40,8 +40,8 @@ public class TodoItemModelResourcePermissionDefination implements ModelResourceP
 	}
 
 	@Override
-	public long getPrimaryKey(TodoItem t) {
-        return t.getTodoItemId();
+	public long getPrimaryKey(TodoItem todoItem) {
+        return todoItem.getTodoItemId();
 	}
 
 	@Override

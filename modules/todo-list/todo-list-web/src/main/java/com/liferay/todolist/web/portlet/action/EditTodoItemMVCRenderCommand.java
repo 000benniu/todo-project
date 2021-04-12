@@ -20,10 +20,14 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 @Component(
-		immediate = true,
-		property = { "javax.portlet.name=" + TodoListWebPortletKeys.TODOLISTWEB, "mvc.command.name="
-				+ MVCCommandNames.EDIT_TODOITEM },
-		service = MVCRenderCommand.class)
+	immediate = true,
+	property = {
+		"javax.portlet.name=" + TodoListWebPortletKeys.TODOLISTWEB_PORTLETNAME, 
+		"mvc.command.name="
+		+ MVCCommandNames.EDIT_TODOITEM
+	},
+	service = MVCRenderCommand.class
+)
 public class EditTodoItemMVCRenderCommand implements MVCRenderCommand {
 	@Override
 	public String render(RenderRequest renderRequest,

@@ -5,7 +5,6 @@ package com.liferay.todolist.web.constants;
  */
 public class TodoListWebPortletKeys {
 
-	public static final String TODOLISTWEB =
-		"com_liferay_todolist_web_portlet_TodoListWebPortlet";
+	public static final String TODOLISTWEB_PORTLETNAME = "com_liferay_todolist_web_portlet_TodoListWebPortlet";
 
 }

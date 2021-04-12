@@ -32,7 +32,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
      immediate = true,
      property = {
-         "javax.portlet.name=" + TodoListWebPortletKeys.TODOLISTWEB,
+         "javax.portlet.name=" + TodoListWebPortletKeys.TODOLISTWEB_PORTLETNAME,
          "mvc.command.name=" + MVCCommandNames.ADD_TODOITEM
      },
      service = MVCActionCommand.class

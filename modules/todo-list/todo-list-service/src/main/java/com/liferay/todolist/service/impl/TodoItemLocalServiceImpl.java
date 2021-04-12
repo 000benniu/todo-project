@@ -106,7 +106,7 @@ public class TodoItemLocalServiceImpl extends TodoItemLocalServiceBaseImpl {
 		boolean addGuestPermissions = true;
 		resourceLocalService.addResources(group.getCompanyId(), groupId, userId, TodoItem.class.getName(),
 				todoItem.getTodoItemId(), portletActions, addGroupPermissions, addGuestPermissions);
-		
+
 		return todoItem;
 	}
 	

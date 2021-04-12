@@ -85,11 +85,11 @@ public class TodoItemsManagementToolbarDisplayContext extends BaseManagementTool
 
 		if (Validator.isNull(displayStyle)) {
 			displayStyle = _portalPreferences.getValue(
-					TodoListWebPortletKeys.TODOLISTWEB,
+					TodoListWebPortletKeys.TODOLISTWEB_PORTLETNAME,
 					"todoItems-display-style",
 					"descriptive");
 		} else {
-			_portalPreferences.setValue(TodoListWebPortletKeys.TODOLISTWEB, "todoItems-display-style", displayStyle);
+			_portalPreferences.setValue(TodoListWebPortletKeys.TODOLISTWEB_PORTLETNAME, "todoItems-display-style", displayStyle);
 
 			request.setAttribute(WebKeys.SINGLE_PAGE_APPLICATION_CLEAR_CACHE, Boolean.TRUE);
 		}

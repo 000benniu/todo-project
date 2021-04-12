@@ -1,4 +1,4 @@
-package com.liferay.todolist.internal.security.permission.resource.defination;
+package com.liferay.todolist.internal.security.permission.resource.definition;
 
 import com.liferay.exportimport.kernel.staging.permission.StagingPermission;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermissionLogic;

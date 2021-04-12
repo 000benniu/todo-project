@@ -19,7 +19,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	     immediate = true,
 	     property = {
-	         "javax.portlet.name=" + TodoListWebPortletKeys.TODOLISTWEB,
+	         "javax.portlet.name=" + TodoListWebPortletKeys.TODOLISTWEB_PORTLETNAME,
 	         "mvc.command.name=" + MVCCommandNames.DELETE_TODOITEM
 	     },
 	     service = MVCActionCommand.class
@@ -30,7 +30,7 @@ public class DeleteTodoItemMVCActionCommand extends BaseMVCActionCommand{
 	protected void doProcessAction(ActionRequest actionRequest,
 			ActionResponse actionResponse) throws Exception {
 
-        long todoItemId = ParamUtil.getLong(actionRequest, "todoItemDeleted");
+        long todoItemId = ParamUtil.getLong(actionRequest, "todoItemId");
 
         try {
 
