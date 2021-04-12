@@ -13,12 +13,26 @@
  */
 package com.liferay.todolist.exception;
 
+import java.util.List;
+
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Brian Wing Shun Chan
  */
 public class TodoItemValidationException extends PortalException {
+
+	private static final long serialVersionUID = 4878583922829597896L;
+	private List<String> _errors;
+
+	public TodoItemValidationException(List<String> errors){
+		super(String.join(",", errors));
+		_errors = errors;
+	}
+
+	public List<String> getErrors() {
+		return _errors;
+	}
 
 	public TodoItemValidationException() {
 	}
@@ -34,5 +48,4 @@ public class TodoItemValidationException extends PortalException {
 	public TodoItemValidationException(Throwable throwable) {
 		super(throwable);
 	}
-
 }

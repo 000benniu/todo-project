@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.todolist.model.TodoItem;
 import com.liferay.todolist.service.base.TodoItemLocalServiceBaseImpl;
+import com.liferay.todolist.validator.TodoItemValidator;
 
 import java.util.Date;
 import java.util.List;
@@ -34,6 +35,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * The implementation of the todo item local service.
@@ -64,6 +66,8 @@ public class TodoItemLocalServiceImpl extends TodoItemLocalServiceBaseImpl {
 			Map<Locale, String> descriptionMap, 
 			Date dueDate,
 			ServiceContext serviceContext) throws PortalException {
+		
+		_todoItemValidator.validate(title, descriptionMap, dueDate);
 
 		// Get group and user.
 		Group group = GroupUtil.fetchByPrimaryKey(groupId);
@@ -105,6 +109,8 @@ public class TodoItemLocalServiceImpl extends TodoItemLocalServiceBaseImpl {
 			Double progress,
 			Boolean doneFlag,
 			ServiceContext serviceContext) throws PortalException {
+		
+		_todoItemValidator.validate(title, descriptionMap, dueDate, progress);
 		
 		TodoItem todoItem = getTodoItem(todoItemId);
 		
@@ -244,4 +250,7 @@ public class TodoItemLocalServiceImpl extends TodoItemLocalServiceBaseImpl {
 
 		return dynamicQuery;
 	}
+	
+	@Reference
+	TodoItemValidator _todoItemValidator;
 }

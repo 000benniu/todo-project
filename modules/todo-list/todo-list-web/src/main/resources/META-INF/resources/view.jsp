@@ -1,4 +1,12 @@
-<%@ include file="/init.jsp" %>
+<%@ include file="./init.jsp" %>
+
+<liferay-ui:error key="serviceErrorDetails">
+    <liferay-ui:message arguments='<%= SessionErrors.get(liferayPortletRequest, "serviceErrorDetails") %>' key="error.todo-list-service-error" />
+</liferay-ui:error>
+<liferay-ui:success key="todoItemAdded" message="todoItem-added-successfully" />
+<liferay-ui:success key="todoItemUpdated" message="todoItem-updated-successfully" />
+<liferay-ui:success key="todoItemDeleted" message="todoItem-deleted-successfully" />
+
 
 <div class="container-fluid-1280">
 

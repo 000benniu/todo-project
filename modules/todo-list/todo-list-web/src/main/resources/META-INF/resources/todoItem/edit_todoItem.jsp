@@ -1,7 +1,15 @@
- <%@ include file="/init.jsp"%>
+ <%@ include file="../init.jsp"%>
+
+<liferay-ui:error key="serviceErrorDetails">
+    <liferay-ui:message arguments='<%= SessionErrors.get(liferayPortletRequest, "serviceErrorDetails") %>' 
+    key="error.todo-list-service-error" />
+</liferay-ui:error>
+<liferay-ui:error key="ProgressOutOfScope" message="todoItem-progressOutOfScope" />
+<liferay-ui:error key="TodoDueDateNotSet" message="todoItem-todoDueDateNotSet" />
+<liferay-ui:error key="TitleEmpty" message="todoItem-titleEmpty" />
+<liferay-ui:error key="TitleTooShort" message="todoItem-titleTooShort" />
 
  <%-- Generate add / edit action URL and set title. --%>
-
  <c:choose>
      <c:when test="${not empty todoItem}">
          <portlet:actionURL var="todoItemActionURL" name="<%=MVCCommandNames.EDIT_TODOITEM %>">
@@ -34,7 +42,14 @@
              <aui:fieldset>
                  <%-- Title field. --%>
                  <aui:input name="title">
-                     <aui:validator name="required" />
+	                 <aui:validator errorMessage="error.assignment-title-format" name="custom">
+					     function(val, fieldNode, ruleValue) {
+					         var wordExpression = 
+					             new RegExp("^[^\\[\\]\\^$<>]*$");
+					
+					         return wordExpression.test(val);
+					     }
+					 </aui:validator>
                  </aui:input>
 
                  <%-- Description field. --%>

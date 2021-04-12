@@ -24,7 +24,8 @@ import org.osgi.service.component.annotations.Component;
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user",
 		"com.liferay.portlet.display-category=category.todo-list",
-		"com.liferay.portlet.instanceable=false"
+		"com.liferay.portlet.instanceable=false",
+		"javax.portlet.init-param.add-process-action-success-action=false"
 	},
 	service = Portlet.class
 )

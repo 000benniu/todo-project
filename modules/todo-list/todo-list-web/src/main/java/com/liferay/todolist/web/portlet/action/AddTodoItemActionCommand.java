@@ -5,6 +5,8 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
@@ -61,25 +63,26 @@ public class AddTodoItemActionCommand extends BaseMVCActionCommand {
         try {
 
             // Call the service to add a a new todoItem.
-
             _todoItemService.addTodoItem(
                 themeDisplay.getScopeGroupId(), title, descriptionMap, dueDate,
                 serviceContext);
+            
+            SessionMessages.add(actionRequest, "todoItemAdded");
 
             sendRedirect(actionRequest, actionResponse);
         }
         catch (TodoItemValidationException ave) {
 
-            ave.printStackTrace();
+            ave.getErrors().forEach(x -> SessionErrors.add(actionRequest, x));
 
             actionResponse.setRenderParameter(
                 "mvcRenderCommandName", MVCCommandNames.EDIT_TODOITEM);            
 
         }
         catch (PortalException pe) {
-
-            pe.printStackTrace();
-
+        	
+        	SessionErrors.add(actionRequest, "serviceErrorDetails", pe);
+        	
             actionResponse.setRenderParameter(
                 "mvcRenderCommandName", MVCCommandNames.EDIT_TODOITEM);            
         }

@@ -4,6 +4,8 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -60,12 +62,14 @@ public class EditTodoItemMVCActionCommand extends BaseMVCActionCommand {
             // Call the service to update the assignment
 			_todoItemService.updateTodoItem(todoItemId, title, descriptionMap, dueDate, memo, progress, doneFlag,
 					serviceContext);
+			
+			SessionMessages.add(actionRequest, "todoItemUpdated");
 
             sendRedirect(actionRequest, actionResponse);
         }
         catch (TodoItemValidationException ave) {
 
-            ave.printStackTrace();
+            ave.getErrors().forEach(x -> SessionErrors.add(actionRequest, x));
 
             actionResponse.setRenderParameter(
                 "mvcRenderCommandName", MVCCommandNames.EDIT_TODOITEM);            
@@ -73,7 +77,7 @@ public class EditTodoItemMVCActionCommand extends BaseMVCActionCommand {
         }
         catch (PortalException pe) {
 
-            pe.printStackTrace();
+        	SessionErrors.add(actionRequest, "serviceErrorDetails", pe);
 
             actionResponse.setRenderParameter(
                 "mvcRenderCommandName", MVCCommandNames.EDIT_TODOITEM);            

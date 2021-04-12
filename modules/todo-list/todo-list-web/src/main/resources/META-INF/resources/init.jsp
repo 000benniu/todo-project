@@ -22,6 +22,8 @@
 <%@ page import="com.liferay.portal.kernel.language.LanguageUtil"%>
 <%@ page import="com.liferay.portal.kernel.portlet.LiferayWindowState"%>
 <%@ page import="com.liferay.portal.kernel.util.HtmlUtil"%>
+<%@ page import="com.liferay.portal.kernel.servlet.SessionErrors"%>
+
 
 <liferay-theme:defineObjects />
 <portlet:defineObjects />
