@@ -1,2 +1,65 @@
-.todo-list-web {
+.todoListWebPortlet {
+     h1 {
+            font-size: 1.7rem;
+            margin: 20px 0 10px 0;
+            background-color: #EEFFFF;
+        }
+
+    h2 {
+        margin: 30px 0 10px 0;
+    }
+
+    .lfr-search-container-wrapper {
+        a {
+            text-decoration: underline;
+            color: #0088ff;
+        }
+
+        .user-icon {
+            float: left;
+        }
+
+        .user-details {
+            vertical-align: sub;
+            min-width: 10rem;
+
+            .user-name {
+                color: #8dd9ff;
+            }
+        }
+    }
+
+    .todoitem-text {
+        border: 1px solid #eee;
+        border-radius: 5px;        
+        padding: 20px;
+    }
+    
+    .lfr-duedate-column {
+        min-width: 10rem;
+    }
+
+    .todoitem-metadata {
+        font-size: .9em;
+
+        dt {
+            margin-top: 15px;
+        }
+
+        dd {
+
+        }                
+    }
+
+    .edit-todoItem {
+
+        .todoItem-description {
+            font-size: .875rem;
+            font-weight: 600;
+
+            .reference-mark {
+                font-size: 6px;
+            }
+        }    
+    }
 }
