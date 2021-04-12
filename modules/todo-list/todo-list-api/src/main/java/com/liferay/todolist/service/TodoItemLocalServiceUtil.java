@@ -131,6 +131,14 @@ public class TodoItemLocalServiceUtil {
 		return getService().deleteTodoItem(todoItem);
 	}
 
+	public static com.liferay.todolist.model.TodoItem deleteTodoItem(
+			com.liferay.todolist.model.TodoItem todoItem,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().deleteTodoItem(todoItem, serviceContext);
+	}
+
 	public static com.liferay.todolist.model.TodoItem doneTodoItem(
 			long todoItemId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)

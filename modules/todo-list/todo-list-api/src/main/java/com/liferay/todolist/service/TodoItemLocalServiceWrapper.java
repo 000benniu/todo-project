@@ -130,6 +130,15 @@ public class TodoItemLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.todolist.model.TodoItem deleteTodoItem(
+			com.liferay.todolist.model.TodoItem todoItem,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _todoItemLocalService.deleteTodoItem(todoItem, serviceContext);
+	}
+
+	@Override
 	public com.liferay.todolist.model.TodoItem doneTodoItem(
 			long todoItemId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)

@@ -133,6 +133,10 @@ public interface TodoItemLocalService
 	@Indexable(type = IndexableType.DELETE)
 	public TodoItem deleteTodoItem(TodoItem todoItem);
 
+	public TodoItem deleteTodoItem(
+			TodoItem todoItem, ServiceContext serviceContext)
+		throws PortalException;
+
 	public TodoItem doneTodoItem(long todoItemId, ServiceContext serviceContext)
 		throws PortalException;
 

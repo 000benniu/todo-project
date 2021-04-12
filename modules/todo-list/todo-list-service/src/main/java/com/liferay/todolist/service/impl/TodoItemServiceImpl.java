@@ -16,8 +16,12 @@ package com.liferay.todolist.service.impl;
 
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.todolist.constants.TodoListConstants;
 import com.liferay.todolist.model.TodoItem;
 import com.liferay.todolist.service.base.TodoItemServiceBaseImpl;
 
@@ -27,6 +31,9 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * The implementation of the todo item remote service.
@@ -61,10 +68,17 @@ public class TodoItemServiceImpl extends TodoItemServiceBaseImpl {
 			Date dueDate,
 			ServiceContext serviceContext) throws PortalException {
 
+        _portletResourcePermission.check(
+            getPermissionChecker(), serviceContext.getScopeGroupId(),
+            ActionKeys.ADD_ENTRY);
+        
 		return todoItemLocalService.addTodoItem(groupId, title, descriptionMap, dueDate, serviceContext);
 	}
 
 	public TodoItem deleteTodoItem(long todoItemId) throws PortalException {
+		
+		// Check permission
+		_todoItemModelResourcePermission.check(getPermissionChecker(), todoItemId, ActionKeys.DELETE);
 
 		TodoItem todoItem = todoItemLocalService.getTodoItem(todoItemId);
 
@@ -72,14 +86,18 @@ public class TodoItemServiceImpl extends TodoItemServiceBaseImpl {
 	}
 
 	public TodoItem getTodoItem(long todoItemId) throws PortalException {
+		
 
 		TodoItem todoItem = todoItemLocalService.getTodoItem(todoItemId);
 
+		// Check permission
+		_todoItemModelResourcePermission.check(getPermissionChecker(), todoItem, ActionKeys.VIEW);
+		
 		return todoItem;
 	}
 
 	public List<TodoItem> getTodoItemsByGroupId(long groupId) {
-
+		
 		return todoItemPersistence.findByGroupId(groupId);
 	}
 
@@ -107,7 +125,24 @@ public class TodoItemServiceImpl extends TodoItemServiceBaseImpl {
 			Boolean doneFlag,
 			ServiceContext serviceContext) throws PortalException {
 
+		_todoItemModelResourcePermission.check(
+	            getPermissionChecker(), todoItemId, ActionKeys.UPDATE);
+
 		return todoItemLocalService.updateTodoItem(todoItemId, title, descriptionMap, dueDate, memo, progress,
 				doneFlag, serviceContext);
 	}
+	
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(model.class.name=com.liferay.todolist.model.TodoItem)"
+	)
+	private volatile ModelResourcePermission<TodoItem> _todoItemModelResourcePermission;
+
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(resource.name=" + TodoListConstants.RESOURCE_NAME + ")"
+	)
+	private volatile PortletResourcePermission _portletResourcePermission;
 }

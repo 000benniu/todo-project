@@ -6,6 +6,7 @@ Export-Package: \
 	com.liferay.todolist.model,\
 	com.liferay.todolist.service,\
 	com.liferay.todolist.service.persistence,\
-	com.liferay.todolist.validator
+	com.liferay.todolist.validator,\
+	com.liferay.todolist.constants
 -check: EXPORTS
 -includeresource: META-INF/service.xml=../todo-list-service/service.xml

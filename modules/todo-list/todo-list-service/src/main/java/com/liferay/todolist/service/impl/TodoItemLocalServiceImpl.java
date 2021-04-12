@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.persistence.GroupUtil;
@@ -98,7 +99,15 @@ public class TodoItemLocalServiceImpl extends TodoItemLocalServiceBaseImpl {
 		todoItem.setMemo(""); // default ""
 
 		// Persist todoItem to database.
-		return super.addTodoItem(todoItem);
+		todoItem = super.addTodoItem(todoItem);
+		
+		boolean portletActions = false;
+		boolean addGroupPermissions = true;
+		boolean addGuestPermissions = true;
+		resourceLocalService.addResources(group.getCompanyId(), groupId, userId, TodoItem.class.getName(),
+				todoItem.getTodoItemId(), portletActions, addGroupPermissions, addGuestPermissions);
+		
+		return todoItem;
 	}
 	
 	public TodoItem updateTodoItem(long todoItemId, 
@@ -147,6 +156,14 @@ public class TodoItemLocalServiceImpl extends TodoItemLocalServiceBaseImpl {
 		todoItem.setDoneFlag(false);
 		
 		return super.updateTodoItem(todoItem);
+	}
+	
+	public TodoItem deleteTodoItem(TodoItem todoItem,
+			ServiceContext serviceContext) throws PortalException {
+
+		resourceLocalService.deleteResource(todoItem, ResourceConstants.SCOPE_INDIVIDUAL);
+
+		return super.deleteTodoItem(todoItem);
 	}
 	
 	@Override
