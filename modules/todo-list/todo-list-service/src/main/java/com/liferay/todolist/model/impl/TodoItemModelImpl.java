@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.todolist.model.TodoItem;
 import com.liferay.todolist.model.TodoItemModel;
 import com.liferay.todolist.model.TodoItemSoap;
@@ -87,7 +88,9 @@ public class TodoItemModelImpl
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
 		{"title", Types.VARCHAR}, {"description", Types.VARCHAR},
 		{"doneFlag", Types.BOOLEAN}, {"progress", Types.DOUBLE},
-		{"dueDate", Types.TIMESTAMP}, {"memo", Types.VARCHAR}
+		{"dueDate", Types.TIMESTAMP}, {"memo", Types.VARCHAR},
+		{"status", Types.INTEGER}, {"statusByUserId", Types.BIGINT},
+		{"statusByUserName", Types.VARCHAR}, {"statusDate", Types.TIMESTAMP}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -108,10 +111,14 @@ public class TodoItemModelImpl
 		TABLE_COLUMNS_MAP.put("progress", Types.DOUBLE);
 		TABLE_COLUMNS_MAP.put("dueDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("memo", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("statusByUserId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("statusByUserName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("statusDate", Types.TIMESTAMP);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table TodoList_TodoItem (uuid_ VARCHAR(75) null,todoItemId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,title VARCHAR(75) null,description STRING null,doneFlag BOOLEAN,progress DOUBLE,dueDate DATE null,memo VARCHAR(75) null)";
+		"create table TodoList_TodoItem (uuid_ VARCHAR(75) null,todoItemId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,title VARCHAR(75) null,description STRING null,doneFlag BOOLEAN,progress DOUBLE,dueDate DATE null,memo VARCHAR(75) null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null)";
 
 	public static final String TABLE_SQL_DROP = "drop table TodoList_TodoItem";
 
@@ -193,6 +200,10 @@ public class TodoItemModelImpl
 		model.setProgress(soapModel.getProgress());
 		model.setDueDate(soapModel.getDueDate());
 		model.setMemo(soapModel.getMemo());
+		model.setStatus(soapModel.getStatus());
+		model.setStatusByUserId(soapModel.getStatusByUserId());
+		model.setStatusByUserName(soapModel.getStatusByUserName());
+		model.setStatusDate(soapModel.getStatusDate());
 
 		return model;
 	}
@@ -386,6 +397,22 @@ public class TodoItemModelImpl
 		attributeGetterFunctions.put("memo", TodoItem::getMemo);
 		attributeSetterBiConsumers.put(
 			"memo", (BiConsumer<TodoItem, String>)TodoItem::setMemo);
+		attributeGetterFunctions.put("status", TodoItem::getStatus);
+		attributeSetterBiConsumers.put(
+			"status", (BiConsumer<TodoItem, Integer>)TodoItem::setStatus);
+		attributeGetterFunctions.put(
+			"statusByUserId", TodoItem::getStatusByUserId);
+		attributeSetterBiConsumers.put(
+			"statusByUserId",
+			(BiConsumer<TodoItem, Long>)TodoItem::setStatusByUserId);
+		attributeGetterFunctions.put(
+			"statusByUserName", TodoItem::getStatusByUserName);
+		attributeSetterBiConsumers.put(
+			"statusByUserName",
+			(BiConsumer<TodoItem, String>)TodoItem::setStatusByUserName);
+		attributeGetterFunctions.put("statusDate", TodoItem::getStatusDate);
+		attributeSetterBiConsumers.put(
+			"statusDate", (BiConsumer<TodoItem, Date>)TodoItem::setStatusDate);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -785,10 +812,171 @@ public class TodoItemModelImpl
 		_memo = memo;
 	}
 
+	@JSON
+	@Override
+	public int getStatus() {
+		return _status;
+	}
+
+	@Override
+	public void setStatus(int status) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_status = status;
+	}
+
+	@JSON
+	@Override
+	public long getStatusByUserId() {
+		return _statusByUserId;
+	}
+
+	@Override
+	public void setStatusByUserId(long statusByUserId) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_statusByUserId = statusByUserId;
+	}
+
+	@Override
+	public String getStatusByUserUuid() {
+		try {
+			User user = UserLocalServiceUtil.getUserById(getStatusByUserId());
+
+			return user.getUuid();
+		}
+		catch (PortalException portalException) {
+			return "";
+		}
+	}
+
+	@Override
+	public void setStatusByUserUuid(String statusByUserUuid) {
+	}
+
+	@JSON
+	@Override
+	public String getStatusByUserName() {
+		if (_statusByUserName == null) {
+			return "";
+		}
+		else {
+			return _statusByUserName;
+		}
+	}
+
+	@Override
+	public void setStatusByUserName(String statusByUserName) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_statusByUserName = statusByUserName;
+	}
+
+	@JSON
+	@Override
+	public Date getStatusDate() {
+		return _statusDate;
+	}
+
+	@Override
+	public void setStatusDate(Date statusDate) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_statusDate = statusDate;
+	}
+
 	@Override
 	public StagedModelType getStagedModelType() {
 		return new StagedModelType(
 			PortalUtil.getClassNameId(TodoItem.class.getName()));
+	}
+
+	@Override
+	public boolean isApproved() {
+		if (getStatus() == WorkflowConstants.STATUS_APPROVED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isDenied() {
+		if (getStatus() == WorkflowConstants.STATUS_DENIED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isDraft() {
+		if (getStatus() == WorkflowConstants.STATUS_DRAFT) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isExpired() {
+		if (getStatus() == WorkflowConstants.STATUS_EXPIRED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isInactive() {
+		if (getStatus() == WorkflowConstants.STATUS_INACTIVE) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isIncomplete() {
+		if (getStatus() == WorkflowConstants.STATUS_INCOMPLETE) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isPending() {
+		if (getStatus() == WorkflowConstants.STATUS_PENDING) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isScheduled() {
+		if (getStatus() == WorkflowConstants.STATUS_SCHEDULED) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	public long getColumnBitmask() {
@@ -927,6 +1115,10 @@ public class TodoItemModelImpl
 		todoItemImpl.setProgress(getProgress());
 		todoItemImpl.setDueDate(getDueDate());
 		todoItemImpl.setMemo(getMemo());
+		todoItemImpl.setStatus(getStatus());
+		todoItemImpl.setStatusByUserId(getStatusByUserId());
+		todoItemImpl.setStatusByUserName(getStatusByUserName());
+		todoItemImpl.setStatusDate(getStatusDate());
 
 		todoItemImpl.resetOriginalValues();
 
@@ -1083,6 +1275,27 @@ public class TodoItemModelImpl
 			todoItemCacheModel.memo = null;
 		}
 
+		todoItemCacheModel.status = getStatus();
+
+		todoItemCacheModel.statusByUserId = getStatusByUserId();
+
+		todoItemCacheModel.statusByUserName = getStatusByUserName();
+
+		String statusByUserName = todoItemCacheModel.statusByUserName;
+
+		if ((statusByUserName != null) && (statusByUserName.length() == 0)) {
+			todoItemCacheModel.statusByUserName = null;
+		}
+
+		Date statusDate = getStatusDate();
+
+		if (statusDate != null) {
+			todoItemCacheModel.statusDate = statusDate.getTime();
+		}
+		else {
+			todoItemCacheModel.statusDate = Long.MIN_VALUE;
+		}
+
 		return todoItemCacheModel;
 	}
 
@@ -1172,6 +1385,10 @@ public class TodoItemModelImpl
 	private double _progress;
 	private Date _dueDate;
 	private String _memo;
+	private int _status;
+	private long _statusByUserId;
+	private String _statusByUserName;
+	private Date _statusDate;
 
 	public <T> T getColumnValue(String columnName) {
 		columnName = _attributeNames.getOrDefault(columnName, columnName);
@@ -1216,6 +1433,10 @@ public class TodoItemModelImpl
 		_columnOriginalValues.put("progress", _progress);
 		_columnOriginalValues.put("dueDate", _dueDate);
 		_columnOriginalValues.put("memo", _memo);
+		_columnOriginalValues.put("status", _status);
+		_columnOriginalValues.put("statusByUserId", _statusByUserId);
+		_columnOriginalValues.put("statusByUserName", _statusByUserName);
+		_columnOriginalValues.put("statusDate", _statusDate);
 	}
 
 	private static final Map<String, String> _attributeNames;
@@ -1266,6 +1487,14 @@ public class TodoItemModelImpl
 		columnBitmasks.put("dueDate", 4096L);
 
 		columnBitmasks.put("memo", 8192L);
+
+		columnBitmasks.put("status", 16384L);
+
+		columnBitmasks.put("statusByUserId", 32768L);
+
+		columnBitmasks.put("statusByUserName", 65536L);
+
+		columnBitmasks.put("statusDate", 131072L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

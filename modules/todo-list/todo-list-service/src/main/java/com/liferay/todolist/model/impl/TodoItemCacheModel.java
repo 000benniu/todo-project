@@ -61,7 +61,7 @@ public class TodoItemCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(29);
+		StringBundler sb = new StringBundler(37);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -91,6 +91,14 @@ public class TodoItemCacheModel
 		sb.append(dueDate);
 		sb.append(", memo=");
 		sb.append(memo);
+		sb.append(", status=");
+		sb.append(status);
+		sb.append(", statusByUserId=");
+		sb.append(statusByUserId);
+		sb.append(", statusByUserName=");
+		sb.append(statusByUserName);
+		sb.append(", statusDate=");
+		sb.append(statusDate);
 		sb.append("}");
 
 		return sb.toString();
@@ -164,6 +172,23 @@ public class TodoItemCacheModel
 			todoItemImpl.setMemo(memo);
 		}
 
+		todoItemImpl.setStatus(status);
+		todoItemImpl.setStatusByUserId(statusByUserId);
+
+		if (statusByUserName == null) {
+			todoItemImpl.setStatusByUserName("");
+		}
+		else {
+			todoItemImpl.setStatusByUserName(statusByUserName);
+		}
+
+		if (statusDate == Long.MIN_VALUE) {
+			todoItemImpl.setStatusDate(null);
+		}
+		else {
+			todoItemImpl.setStatusDate(new Date(statusDate));
+		}
+
 		todoItemImpl.resetOriginalValues();
 
 		return todoItemImpl;
@@ -191,6 +216,12 @@ public class TodoItemCacheModel
 		progress = objectInput.readDouble();
 		dueDate = objectInput.readLong();
 		memo = objectInput.readUTF();
+
+		status = objectInput.readInt();
+
+		statusByUserId = objectInput.readLong();
+		statusByUserName = objectInput.readUTF();
+		statusDate = objectInput.readLong();
 	}
 
 	@Override
@@ -245,6 +276,19 @@ public class TodoItemCacheModel
 		else {
 			objectOutput.writeUTF(memo);
 		}
+
+		objectOutput.writeInt(status);
+
+		objectOutput.writeLong(statusByUserId);
+
+		if (statusByUserName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(statusByUserName);
+		}
+
+		objectOutput.writeLong(statusDate);
 	}
 
 	public String uuid;
@@ -261,5 +305,9 @@ public class TodoItemCacheModel
 	public double progress;
 	public long dueDate;
 	public String memo;
+	public int status;
+	public long statusByUserId;
+	public String statusByUserName;
+	public long statusDate;
 
 }

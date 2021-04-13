@@ -12,5 +12,9 @@ create table TodoList_TodoItem (
 	doneFlag BOOLEAN,
 	progress DOUBLE,
 	dueDate DATE null,
-	memo VARCHAR(75) null
+	memo VARCHAR(75) null,
+	status INTEGER,
+	statusByUserId LONG,
+	statusByUserName VARCHAR(75) null,
+	statusDate DATE null
 );

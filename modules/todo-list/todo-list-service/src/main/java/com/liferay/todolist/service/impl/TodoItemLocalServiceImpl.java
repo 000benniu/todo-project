@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.persistence.GroupUtil;
+import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.todolist.model.TodoItem;
@@ -62,6 +63,20 @@ public class TodoItemLocalServiceImpl extends TodoItemLocalServiceBaseImpl {
 	 *
 	 * Never reference this class directly. Use <code>com.liferay.todolist.service.TodoItemLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.todolist.service.TodoItemLocalServiceUtil</code>.
 	 */
+	
+	private void updateAsset(
+			TodoItem todoItem,
+			ServiceContext serviceContext
+			) throws PortalException {
+		assetEntryLocalService.updateEntry(
+				serviceContext.getUserId(), serviceContext.getScopeGroupId(),
+				todoItem.getCreateDate(), todoItem.getModifiedDate(), TodoItem.class.getName(),
+				todoItem.getTodoItemId(), todoItem.getUuid(), 0, serviceContext.getAssetCategoryIds(),
+				serviceContext.getAssetTagNames(), true, true, todoItem.getCreateDate(), null, null, null,
+				ContentTypes.TEXT_HTML, todoItem.getTitle(), todoItem.getDescription(serviceContext.getLocale()), 
+				null, null, null, 0, 0, serviceContext.getAssetPriority());
+	}
+	 
 	public TodoItem addTodoItem(long groupId, 
 			String title,
 			Map<Locale, String> descriptionMap, 
@@ -104,9 +119,13 @@ public class TodoItemLocalServiceImpl extends TodoItemLocalServiceBaseImpl {
 		boolean portletActions = false;
 		boolean addGroupPermissions = true;
 		boolean addGuestPermissions = true;
+		// works for model's permission registration.
 		resourceLocalService.addResources(group.getCompanyId(), groupId, userId, TodoItem.class.getName(),
 				todoItem.getTodoItemId(), portletActions, addGroupPermissions, addGuestPermissions);
 
+		// works for asset framework.
+		updateAsset(todoItem, serviceContext);
+		
 		return todoItem;
 	}
 	
@@ -132,7 +151,9 @@ public class TodoItemLocalServiceImpl extends TodoItemLocalServiceBaseImpl {
 		todoItem.setProgress(progress);
 		todoItem.setDoneFlag(doneFlag);
 		todoItem.setMemo(memo);
-		
+
+		// works for asset framework.
+		updateAsset(todoItem, serviceContext);
 		return super.updateTodoItem(todoItem);
 	}
 
@@ -143,7 +164,9 @@ public class TodoItemLocalServiceImpl extends TodoItemLocalServiceBaseImpl {
 		
 		todoItem.setModifiedDate(new Date());
 		todoItem.setDoneFlag(true);
-		
+
+		// works for asset framework.
+		updateAsset(todoItem, serviceContext);
 		return super.updateTodoItem(todoItem);
 	}
 	
@@ -154,15 +177,21 @@ public class TodoItemLocalServiceImpl extends TodoItemLocalServiceBaseImpl {
 		
 		todoItem.setModifiedDate(new Date());
 		todoItem.setDoneFlag(false);
-		
+
+		// works for asset framework.
+		updateAsset(todoItem, serviceContext);
 		return super.updateTodoItem(todoItem);
 	}
 	
 	public TodoItem deleteTodoItem(TodoItem todoItem,
 			ServiceContext serviceContext) throws PortalException {
 
+		// works for model's permission registration.
 		resourceLocalService.deleteResource(todoItem, ResourceConstants.SCOPE_INDIVIDUAL);
 
+		// works for asset framework.
+		assetEntryLocalService.deleteEntry(TodoItem.class.getName(), todoItem.getTodoItemId());
+		
 		return super.deleteTodoItem(todoItem);
 	}
 	

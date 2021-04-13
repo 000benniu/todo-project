@@ -29,7 +29,11 @@
         <column name="progress" type="double"></column>
         <column name="dueDate" type="Date" />
         <column name="memo" type="String" />
-
+        
+        <column name="status" type="int" />
+        <column name="statusByUserId" type="long" />
+        <column name="statusByUserName" type="String" />
+        <column name="statusDate" type="Date" />
 		<!-- Order -->
 
         <order by="asc">

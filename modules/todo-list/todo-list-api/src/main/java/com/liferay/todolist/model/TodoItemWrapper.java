@@ -57,6 +57,10 @@ public class TodoItemWrapper
 		attributes.put("progress", getProgress());
 		attributes.put("dueDate", getDueDate());
 		attributes.put("memo", getMemo());
+		attributes.put("status", getStatus());
+		attributes.put("statusByUserId", getStatusByUserId());
+		attributes.put("statusByUserName", getStatusByUserName());
+		attributes.put("statusDate", getStatusDate());
 
 		return attributes;
 	}
@@ -145,6 +149,30 @@ public class TodoItemWrapper
 
 		if (memo != null) {
 			setMemo(memo);
+		}
+
+		Integer status = (Integer)attributes.get("status");
+
+		if (status != null) {
+			setStatus(status);
+		}
+
+		Long statusByUserId = (Long)attributes.get("statusByUserId");
+
+		if (statusByUserId != null) {
+			setStatusByUserId(statusByUserId);
+		}
+
+		String statusByUserName = (String)attributes.get("statusByUserName");
+
+		if (statusByUserName != null) {
+			setStatusByUserName(statusByUserName);
+		}
+
+		Date statusDate = (Date)attributes.get("statusDate");
+
+		if (statusDate != null) {
+			setStatusDate(statusDate);
 		}
 	}
 
@@ -330,6 +358,56 @@ public class TodoItemWrapper
 	}
 
 	/**
+	 * Returns the status of this todo item.
+	 *
+	 * @return the status of this todo item
+	 */
+	@Override
+	public int getStatus() {
+		return model.getStatus();
+	}
+
+	/**
+	 * Returns the status by user ID of this todo item.
+	 *
+	 * @return the status by user ID of this todo item
+	 */
+	@Override
+	public long getStatusByUserId() {
+		return model.getStatusByUserId();
+	}
+
+	/**
+	 * Returns the status by user name of this todo item.
+	 *
+	 * @return the status by user name of this todo item
+	 */
+	@Override
+	public String getStatusByUserName() {
+		return model.getStatusByUserName();
+	}
+
+	/**
+	 * Returns the status by user uuid of this todo item.
+	 *
+	 * @return the status by user uuid of this todo item
+	 */
+	@Override
+	public String getStatusByUserUuid() {
+		return model.getStatusByUserUuid();
+	}
+
+	/**
+	 * Returns the status date of this todo item.
+	 *
+	 * @return the status date of this todo item
+	 */
+	@Override
+	public Date getStatusDate() {
+		return model.getStatusDate();
+	}
+
+	/**
 	 * Returns the title of this todo item.
 	 *
 	 * @return the title of this todo item
@@ -390,6 +468,26 @@ public class TodoItemWrapper
 	}
 
 	/**
+	 * Returns <code>true</code> if this todo item is approved.
+	 *
+	 * @return <code>true</code> if this todo item is approved; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isApproved() {
+		return model.isApproved();
+	}
+
+	/**
+	 * Returns <code>true</code> if this todo item is denied.
+	 *
+	 * @return <code>true</code> if this todo item is denied; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDenied() {
+		return model.isDenied();
+	}
+
+	/**
 	 * Returns <code>true</code> if this todo item is done flag.
 	 *
 	 * @return <code>true</code> if this todo item is done flag; <code>false</code> otherwise
@@ -397,6 +495,66 @@ public class TodoItemWrapper
 	@Override
 	public boolean isDoneFlag() {
 		return model.isDoneFlag();
+	}
+
+	/**
+	 * Returns <code>true</code> if this todo item is a draft.
+	 *
+	 * @return <code>true</code> if this todo item is a draft; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDraft() {
+		return model.isDraft();
+	}
+
+	/**
+	 * Returns <code>true</code> if this todo item is expired.
+	 *
+	 * @return <code>true</code> if this todo item is expired; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isExpired() {
+		return model.isExpired();
+	}
+
+	/**
+	 * Returns <code>true</code> if this todo item is inactive.
+	 *
+	 * @return <code>true</code> if this todo item is inactive; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isInactive() {
+		return model.isInactive();
+	}
+
+	/**
+	 * Returns <code>true</code> if this todo item is incomplete.
+	 *
+	 * @return <code>true</code> if this todo item is incomplete; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isIncomplete() {
+		return model.isIncomplete();
+	}
+
+	/**
+	 * Returns <code>true</code> if this todo item is pending.
+	 *
+	 * @return <code>true</code> if this todo item is pending; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isPending() {
+		return model.isPending();
+	}
+
+	/**
+	 * Returns <code>true</code> if this todo item is scheduled.
+	 *
+	 * @return <code>true</code> if this todo item is scheduled; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isScheduled() {
+		return model.isScheduled();
 	}
 
 	@Override
@@ -574,6 +732,56 @@ public class TodoItemWrapper
 	@Override
 	public void setProgress(double progress) {
 		model.setProgress(progress);
+	}
+
+	/**
+	 * Sets the status of this todo item.
+	 *
+	 * @param status the status of this todo item
+	 */
+	@Override
+	public void setStatus(int status) {
+		model.setStatus(status);
+	}
+
+	/**
+	 * Sets the status by user ID of this todo item.
+	 *
+	 * @param statusByUserId the status by user ID of this todo item
+	 */
+	@Override
+	public void setStatusByUserId(long statusByUserId) {
+		model.setStatusByUserId(statusByUserId);
+	}
+
+	/**
+	 * Sets the status by user name of this todo item.
+	 *
+	 * @param statusByUserName the status by user name of this todo item
+	 */
+	@Override
+	public void setStatusByUserName(String statusByUserName) {
+		model.setStatusByUserName(statusByUserName);
+	}
+
+	/**
+	 * Sets the status by user uuid of this todo item.
+	 *
+	 * @param statusByUserUuid the status by user uuid of this todo item
+	 */
+	@Override
+	public void setStatusByUserUuid(String statusByUserUuid) {
+		model.setStatusByUserUuid(statusByUserUuid);
+	}
+
+	/**
+	 * Sets the status date of this todo item.
+	 *
+	 * @param statusDate the status date of this todo item
+	 */
+	@Override
+	public void setStatusDate(Date statusDate) {
+		model.setStatusDate(statusDate);
 	}
 
 	/**

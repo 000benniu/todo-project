@@ -16,5 +16,9 @@
 		<field name="progress" type="double" />
 		<field name="dueDate" type="Date" />
 		<field name="memo" type="String" />
+		<field name="status" type="int" />
+		<field name="statusByUserId" type="long" />
+		<field name="statusByUserName" type="String" />
+		<field name="statusDate" type="Date" />
 	</model>
 </model-hints>
