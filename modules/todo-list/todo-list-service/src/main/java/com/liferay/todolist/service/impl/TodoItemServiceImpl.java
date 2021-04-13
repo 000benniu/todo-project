@@ -99,8 +99,10 @@ public class TodoItemServiceImpl extends TodoItemServiceBaseImpl {
 	}
 
 	public List<TodoItem> getTodoItemsByGroupId(long groupId) {
-		
-		return todoItemPersistence.filterFindByGroupId(groupId);
+		System.out.println("before call the filter methods");
+		List<TodoItem> result = todoItemPersistence.filterFindByGroupId(groupId);
+		System.out.println("after call the filter methods");
+		return result;
 	}
 
 	public List<TodoItem> getTodoItemsByKeywords(long groupId,
