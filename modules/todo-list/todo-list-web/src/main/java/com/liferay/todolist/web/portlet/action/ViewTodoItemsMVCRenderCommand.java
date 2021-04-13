@@ -15,6 +15,7 @@ import com.liferay.todolist.service.TodoItemService;
 import com.liferay.todolist.web.constants.MVCCommandNames;
 import com.liferay.todolist.web.constants.TodoListWebPortletKeys;
 import com.liferay.todolist.web.display.context.TodoItemsManagementToolbarDisplayContext;
+import com.liferay.todolist.web.internal.security.permission.resource.TodoItemPermission;
 
 import java.util.List;
 
@@ -45,6 +46,8 @@ public class ViewTodoItemsMVCRenderCommand implements MVCRenderCommand {
 
 		// Add Clay management toolbar related attributes.
 		addManagementToolbarAttributes(renderRequest, renderResponse);
+		
+		renderRequest.setAttribute("todoItemPermission", _todoItemPermission);
 
 		return "/view.jsp";
 	}
@@ -128,5 +131,7 @@ public class ViewTodoItemsMVCRenderCommand implements MVCRenderCommand {
 
 	@Reference
 	private Portal _portal;
-
+	
+	@Reference
+	protected TodoItemPermission _todoItemPermission;
 }

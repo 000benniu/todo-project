@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.todolist.web.constants.MVCCommandNames;
 import com.liferay.todolist.web.constants.TodoListWebPortletKeys;
+import com.liferay.todolist.web.internal.security.permission.resource.TodoItemTopLevelPermission;
 
 import java.util.List;
 
@@ -48,6 +49,16 @@ public class TodoItemsManagementToolbarDisplayContext extends BaseManagementTool
 	 */
 	public CreationMenu getCreationMenu() {
 
+	     // Check if user has permissions to add assignments.
+
+	     if (!TodoItemTopLevelPermission.contains(
+	             _themeDisplay.getPermissionChecker(),
+	             _themeDisplay.getScopeGroupId(), "ADD_ENTRY")) {
+
+	         return null;
+	     }
+
+	     
 		// Create the menu.
 
 		return new CreationMenu() {

@@ -11,7 +11,8 @@
 <%@ taglib prefix="clay" uri="http://liferay.com/tld/clay"%>
 <%@ taglib prefix="liferay-item-selector" uri="http://liferay.com/tld/item-selector"%>
 <%@ taglib prefix="liferay-frontend" uri="http://liferay.com/tld/frontend"%>
-
+<%@ taglib prefix="liferay-security" uri="http://liferay.com/tld/security" %>
+ 
 <%@ page import="com.liferay.todolist.model.TodoItem"%>
 <%@ page import="com.liferay.todolist.web.constants.MVCCommandNames"%>
 
