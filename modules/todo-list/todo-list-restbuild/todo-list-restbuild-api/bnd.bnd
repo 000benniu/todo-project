@@ -1,0 +1,6 @@
+Bundle-Name: todo-list-restbuild-api
+Bundle-SymbolicName: com.liferay.todolist.resetbuild.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.todolist.resetbuild.dto.v1_0,\
+	com.liferay.todolist.resetbuild.resource.v1_0

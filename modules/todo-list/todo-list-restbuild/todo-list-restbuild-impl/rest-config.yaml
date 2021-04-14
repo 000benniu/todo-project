@@ -1,0 +1,9 @@
+apiDir: "../todo-list-restbuild-api/src/main/java"
+apiPackagePath: "com.liferay.todolist.resetbuild"
+application:
+    baseURI: "/todo-list-restbuild"
+    className: "TodoListRestbuildApplication"
+    name: "TodoListRestbuild"
+author: "ben"
+clientDir: "../todo-list-restbuild-client/src/main/java"
+testDir: "../todo-list-restbuild-test/src/testIntegration/java"

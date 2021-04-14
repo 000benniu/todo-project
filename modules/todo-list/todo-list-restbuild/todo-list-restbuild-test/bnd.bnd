@@ -1,0 +1,4 @@
+Bundle-Name: todo-list-restbuild-test
+Bundle-SymbolicName: com.liferay.todolist.resetbuild.test
+Bundle-Version: 1.0.0
+-includeresource: com.liferay.todolist.resetbuild.client.jar=../todo-list-restbuild-client/build/libs/com.liferay.todolist.resetbuild.client-1.0.0.jar;lib:=true

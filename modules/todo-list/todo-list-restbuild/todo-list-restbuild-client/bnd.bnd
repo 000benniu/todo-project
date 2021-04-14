@@ -1,0 +1,3 @@
+Bundle-Name: todo-list-restbuild-client
+Bundle-SymbolicName: com.liferay.todolist.resetbuild.client
+Bundle-Version: 1.0.0
