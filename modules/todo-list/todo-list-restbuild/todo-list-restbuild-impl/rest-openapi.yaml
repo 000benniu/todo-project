@@ -1,8 +1,62 @@
+components:
+  schemas:
+    TodoItem:
+      description: The todo item's schema
+      properties:
+        todoItemId:
+          format: int64
+          type: integer
+
+        groupId:
+          format: int64
+          type: integer
+        companyId:
+          format: int64
+          type: integer
+        userName:
+          type: string
+        createDate:
+          format: date-time
+          type: string
+
+        title:
+          type: string
+        description:
+          type: string
+        doneFlag:
+          type: boolean
+        progress:
+          type: number
+        dueDate:
+          format: date-time
+          type: string
+        memo:
+          type: string
+        
 info:
-    description: "TodoListRestbuild REST API"
+    description:
+        "TodoListRestbuild REST API. A Java client JAR is available for use with the group ID 'com.liferay', artifact ID
+        'com.liferay.todolist.resetbuild.client', and version '1.0.0'."
     license:
         name: "Apache 2.0"
         url: "http://www.apache.org/licenses/LICENSE-2.0.html"
     title: "TodoListRestbuild"
     version: v1.0
 openapi: 3.0.1
+
+paths:
+  "/todolist/gettodolist":
+    get:
+      operationId: getTodolistGettodolistPage
+      responses:
+        200:
+          description: "get all todo items."
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/TodoItem"
+            application/xml:
+              schema:
+                items:
+                  $ref: "#/components/schemas/TodoItem"
