@@ -4,6 +4,12 @@ const AUTHORIZATION = 'Basic dGVzdEBsaWZlcmF5LmNvbTp0ZXN0';
 export const gettodolist = () =>
     request(`${SERVER_REST_ENDPOINT}/gettodolist`, 'GET', {});
 
+export const todoItemDone = (todoItemId) =>
+request(`${SERVER_REST_ENDPOINT}/markItemDone/${todoItemId}`, 'PATCH', {});
+
+export const todoItemUndo = (todoItemId) =>
+request(`${SERVER_REST_ENDPOINT}/markItemUndo/${todoItemId}`, 'PATCH', {});
+
 function request(url, method, params, body) {
 
     var result = fetch(getURL(url, params), {

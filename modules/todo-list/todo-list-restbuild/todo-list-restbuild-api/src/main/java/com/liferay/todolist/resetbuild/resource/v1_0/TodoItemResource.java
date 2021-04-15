@@ -33,7 +33,13 @@ public interface TodoItemResource {
 		return FactoryHolder.factory.create();
 	}
 
-	public Page<TodoItem> getTodolistGettodolistPage() throws Exception;
+	public Page<TodoItem> getTodolistPage() throws Exception;
+
+	public Page<TodoItem> patchTodolistMarkItemDoneTodoItemPage(Long todoItemId)
+		throws Exception;
+
+	public Page<TodoItem> getTodolistMarkItemUndoTodoItemPage(Long todoItemId)
+		throws Exception;
 
 	public default void setContextAcceptLanguage(
 		AcceptLanguage contextAcceptLanguage) {

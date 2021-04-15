@@ -47,7 +47,7 @@ openapi: 3.0.1
 paths:
   "/todolist/gettodolist":
     get:
-      operationId: getTodolistGettodolistPage
+      operationId: getTodolistPage
       responses:
         200:
           description: "get all todo items."
@@ -60,3 +60,51 @@ paths:
               schema:
                 items:
                   $ref: "#/components/schemas/TodoItem"
+  "/todolist/markItemDone/{todoItemId}":
+    patch:
+      description: Mark item as done
+      operationId: patchTodolistMarkItemDoneTodoItemPage
+      parameters:
+          - in: path
+            name: todoItemId
+            required: true
+            description: The todoIetmId.
+            schema:
+              format: int64
+              type : integer
+      responses:
+        "204":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/TodoItem"
+            application/xml:
+              schema:
+                items:
+                  $ref: "#/components/schemas/TodoItem"
+          description: "Item done marked."
+  "/todolist/markItemUndo/{todoItemId}":
+    patch:
+      description: Reset item to to-do.
+      operationId: getTodolistMarkItemUndoTodoItemPage
+      parameters:
+          - in: path
+            name: todoItemId
+            required: true
+            description: The todoIetmId.
+            schema:
+              type : integer
+              format: int64
+      responses:
+        "204":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/TodoItem"
+            application/xml:
+              schema:
+                items:
+                  $ref: "#/components/schemas/TodoItem"
+          description: "Item un-do completed."

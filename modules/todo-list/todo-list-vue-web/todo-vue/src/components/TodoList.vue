@@ -21,7 +21,7 @@
         </thead>
         <tr v-bind:key="todoItem.todoItmeId" v-for="todoItem in todolist" :class="todoItem.doneFlag?'done-text':''">
             <td>
-                <input type="checkbox" :checked="todoItem.doneFlag" @change="updateDoneFlag(todoItem.todoItemId)" />
+                <input type="checkbox" :checked="todoItem.doneFlag" @change="updateDoneFlag(todoItem.todoItemId, todoItem.doneFlag)" />
             </td>
             <td>{{ todoItem.todoItemId }}</td>
             <td class="table-cell-expand">{{ todoItem.title }}</td>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { gettodolist } from "../client/rest-client";
+import { gettodolist, todoItemDone, todoItemUndo } from "../client/rest-client";
 
 export default {
   methods: {
@@ -48,22 +48,20 @@ export default {
           this.$emit("error", err);
         });
     },
-    // eslint-disable-next-line no-unused-vars
-    filterByTitle: function (event) {
-      this
-        .loadAppointments
-        //FILLME !
-        ();
-    },
-    // eslint-disable-next-line no-unused-vars
-    filterByDate: function (event) {
-      this
-        .loadAppointments
-        //FILLME !
-        ();
-    },
-    updateDoneFlag(id) {
-        alert(id);
+    updateDoneFlag(todoItemId, doneFlag) {
+        if(doneFlag){
+            todoItemUndo(todoItemId)
+                .then(()=> this.loadTodoList())
+                .catch((err) => {
+                this.$emit("error", err);
+                });
+        }else{
+            todoItemDone(todoItemId)
+                .then(()=> this.loadTodoList())
+                .catch((err) => {
+                this.$emit("error", err);
+                });
+        }
     },
   },
   data() {

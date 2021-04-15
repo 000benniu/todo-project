@@ -165,8 +165,11 @@ public class TodoItemLocalServiceImpl extends TodoItemLocalServiceBaseImpl {
 		todoItem.setModifiedDate(new Date());
 		todoItem.setDoneFlag(true);
 
-		// works for asset framework.
-		updateAsset(todoItem, serviceContext);
+		if(serviceContext != null) {
+			// works for asset framework.
+			updateAsset(todoItem, serviceContext);		
+		}
+		
 		return super.updateTodoItem(todoItem);
 	}
 	
@@ -178,8 +181,10 @@ public class TodoItemLocalServiceImpl extends TodoItemLocalServiceBaseImpl {
 		todoItem.setModifiedDate(new Date());
 		todoItem.setDoneFlag(false);
 
-		// works for asset framework.
-		updateAsset(todoItem, serviceContext);
+		if (serviceContext!=null) {
+			// works for asset framework.
+			updateAsset(todoItem, serviceContext);
+		}
 		return super.updateTodoItem(todoItem);
 	}
 	

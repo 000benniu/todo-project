@@ -9,23 +9,32 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.headless.common.spi.service.context.ServiceContextRequestUtil;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.todolist.resetbuild.dto.v1_0.TodoItem;
 import com.liferay.todolist.resetbuild.resource.v1_0.TodoItemResource;
 import com.liferay.todolist.service.TodoItemLocalService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tags;
 
 /**
@@ -47,23 +56,17 @@ public class TodoItemResourceImpl extends BaseTodoItemResourceImpl {
 	@Path("/todolist/gettodolist")
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {})
-	public Page<TodoItem> getTodolistGettodolistPage() throws Exception {
-		System.out.println("In extend impl");
-		
+	public Page<TodoItem> getTodolistPage() throws Exception {
 		String result = "";
 		
 		Company company;
 		try {
 			company = _companyService.getCompanyById(PortalUtil.getDefaultCompanyId());
 			
-			System.out.println("got company :" + company.getCompanyId());
 			List<Group> groups = _groupLocalService.getGroups(company.getCompanyId(), 0, true);
-			System.out.println("after groups...");
 			
 			List<TodoItem> todolist = new ArrayList<TodoItem>();
 			for(Group group : groups) {
-				System.out.println("got group :" + group.getGroupId());
-
 				List<com.liferay.todolist.model.TodoItem> todoItems = _todoItemLocalService.getTodoItemsByGroupId(group.getGroupId());
 				for(com.liferay.todolist.model.TodoItem todoItem : todoItems) {
 
@@ -97,7 +100,55 @@ public class TodoItemResourceImpl extends BaseTodoItemResourceImpl {
 			e.printStackTrace();
 		}
 		
-		return super.getTodolistGettodolistPage();
+		return super.getTodolistPage();
+	}
+	
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'PATCH' 'http://localhost:8080/o/todo-list-restbuild/v1.0/todolist/markItemDone/{todoItemId}'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@Operation(description = "Mark item as done")
+	@PATCH
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.PATH, name = "todoItemId")}
+	)
+	@Path("/todolist/markItemDone/{todoItemId}")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {})
+	public Page<TodoItem> patchTodolistMarkItemDoneTodoItemPage(
+			@NotNull @Parameter(hidden = true) @PathParam("todoItemId") Long
+				todoItemId)
+		throws Exception {
+		
+		_todoItemLocalService.doneTodoItem(todoItemId, null);
+
+		return Page.of(Collections.emptyList());
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'PATCH' 'http://localhost:8080/o/todo-list-restbuild/v1.0/todolist/markItemUndo/{todoItemId}'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@Operation(description = "Reset item to to-do.")
+	@PATCH
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.PATH, name = "todoItemId")}
+	)
+	@Path("/todolist/markItemUndo/{todoItemId}")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {})
+	public Page<TodoItem> getTodolistMarkItemUndoTodoItemPage(
+			@NotNull @Parameter(hidden = true) @PathParam("todoItemId") Long
+				todoItemId)
+		throws Exception {
+
+		_todoItemLocalService.unDoneTodoItem(todoItemId, null);
+		return Page.of(Collections.emptyList());
 	}
 	
 	private Locale _getDefaultLocale(long groupId) throws Exception {

@@ -184,7 +184,17 @@ public abstract class BaseTodoItemResourceTestCase {
 	}
 
 	@Test
-	public void testGetTodolistGettodolistPage() throws Exception {
+	public void testGetTodolistPage() throws Exception {
+		Assert.assertTrue(false);
+	}
+
+	@Test
+	public void testPatchTodolistMarkItemDoneTodoItemPage() throws Exception {
+		Assert.assertTrue(false);
+	}
+
+	@Test
+	public void testGetTodolistMarkItemUndoTodoItemPage() throws Exception {
 		Assert.assertTrue(false);
 	}
 

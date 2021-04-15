@@ -35,6 +35,7 @@ dependencies {
 	compileOnly group: "org.osgi", name: "org.osgi.core"
 
 	restBuilder group: "com.liferay", name: "com.liferay.portal.tools.rest.builder", version: "1.0.146"
+	compileOnly 'com.liferay.portal:release.dxp.api'
 }
 
 group = "com.liferay.todolist.resetbuild"

@@ -22,6 +22,10 @@ import com.liferay.portal.vulcan.util.TransformUtil;
 import com.liferay.todolist.resetbuild.dto.v1_0.TodoItem;
 import com.liferay.todolist.resetbuild.resource.v1_0.TodoItemResource;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tags;
 
 import java.io.Serializable;
@@ -36,8 +40,12 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import javax.validation.constraints.NotNull;
+
 import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
@@ -63,7 +71,51 @@ public abstract class BaseTodoItemResourceImpl
 	@Path("/todolist/gettodolist")
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {})
-	public Page<TodoItem> getTodolistGettodolistPage() throws Exception {
+	public Page<TodoItem> getTodolistPage() throws Exception {
+		return Page.of(Collections.emptyList());
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'PATCH' 'http://localhost:8080/o/todo-list-restbuild/v1.0/todolist/markItemDone/{todoItemId}'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@Operation(description = "Mark item as done")
+	@PATCH
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.PATH, name = "todoItemId")}
+	)
+	@Path("/todolist/markItemDone/{todoItemId}")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {})
+	public Page<TodoItem> patchTodolistMarkItemDoneTodoItemPage(
+			@NotNull @Parameter(hidden = true) @PathParam("todoItemId") Long
+				todoItemId)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'PATCH' 'http://localhost:8080/o/todo-list-restbuild/v1.0/todolist/markItemUndo/{todoItemId}'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@Operation(description = "Reset item to to-do.")
+	@PATCH
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.PATH, name = "todoItemId")}
+	)
+	@Path("/todolist/markItemUndo/{todoItemId}")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {})
+	public Page<TodoItem> getTodolistMarkItemUndoTodoItemPage(
+			@NotNull @Parameter(hidden = true) @PathParam("todoItemId") Long
+				todoItemId)
+		throws Exception {
+
 		return Page.of(Collections.emptyList());
 	}
 

@@ -6,6 +6,11 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
+import com.liferay.portal.vulcan.pagination.Page;
+import com.liferay.todolist.resetbuild.dto.v1_0.TodoItem;
+import com.liferay.todolist.resetbuild.resource.v1_0.TodoItemResource;
 
 import java.util.function.BiFunction;
 
@@ -24,6 +29,48 @@ import org.osgi.service.component.ComponentServiceObjects;
  */
 @Generated("")
 public class Mutation {
+
+	public static void setTodoItemResourceComponentServiceObjects(
+		ComponentServiceObjects<TodoItemResource>
+			todoItemResourceComponentServiceObjects) {
+
+		_todoItemResourceComponentServiceObjects =
+			todoItemResourceComponentServiceObjects;
+	}
+
+	@GraphQLField(description = "Mark item as done")
+	public java.util.Collection<TodoItem> patchTodolistMarkItemDoneTodoItemPage(
+			@GraphQLName("todoItemId") Long todoItemId)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_todoItemResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			todoItemResource -> {
+				Page paginationPage =
+					todoItemResource.patchTodolistMarkItemDoneTodoItemPage(
+						todoItemId);
+
+				return paginationPage.getItems();
+			});
+	}
+
+	@GraphQLField(description = "Reset item to to-do.")
+	public java.util.Collection<TodoItem> getTodolistMarkItemUndoTodoItemPage(
+			@GraphQLName("todoItemId") Long todoItemId)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_todoItemResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			todoItemResource -> {
+				Page paginationPage =
+					todoItemResource.getTodolistMarkItemUndoTodoItemPage(
+						todoItemId);
+
+				return paginationPage.getItems();
+			});
+	}
 
 	private <T, R, E1 extends Throwable, E2 extends Throwable> R
 			_applyComponentServiceObjects(
@@ -62,6 +109,22 @@ public class Mutation {
 			componentServiceObjects.ungetService(resource);
 		}
 	}
+
+	private void _populateResourceContext(TodoItemResource todoItemResource)
+		throws Exception {
+
+		todoItemResource.setContextAcceptLanguage(_acceptLanguage);
+		todoItemResource.setContextCompany(_company);
+		todoItemResource.setContextHttpServletRequest(_httpServletRequest);
+		todoItemResource.setContextHttpServletResponse(_httpServletResponse);
+		todoItemResource.setContextUriInfo(_uriInfo);
+		todoItemResource.setContextUser(_user);
+		todoItemResource.setGroupLocalService(_groupLocalService);
+		todoItemResource.setRoleLocalService(_roleLocalService);
+	}
+
+	private static ComponentServiceObjects<TodoItemResource>
+		_todoItemResourceComponentServiceObjects;
 
 	private AcceptLanguage _acceptLanguage;
 	private com.liferay.portal.kernel.model.Company _company;

@@ -25,9 +25,23 @@ public interface TodoItemResource {
 		return new Builder();
 	}
 
-	public Page<TodoItem> getTodolistGettodolistPage() throws Exception;
+	public Page<TodoItem> getTodolistPage() throws Exception;
 
-	public HttpInvoker.HttpResponse getTodolistGettodolistPageHttpResponse()
+	public HttpInvoker.HttpResponse getTodolistPageHttpResponse()
+		throws Exception;
+
+	public Page<TodoItem> patchTodolistMarkItemDoneTodoItemPage(Long todoItemId)
+		throws Exception;
+
+	public HttpInvoker.HttpResponse
+			patchTodolistMarkItemDoneTodoItemPageHttpResponse(Long todoItemId)
+		throws Exception;
+
+	public Page<TodoItem> getTodolistMarkItemUndoTodoItemPage(Long todoItemId)
+		throws Exception;
+
+	public HttpInvoker.HttpResponse
+			getTodolistMarkItemUndoTodoItemPageHttpResponse(Long todoItemId)
 		throws Exception;
 
 	public static class Builder {
@@ -85,9 +99,9 @@ public interface TodoItemResource {
 
 	public static class TodoItemResourceImpl implements TodoItemResource {
 
-		public Page<TodoItem> getTodolistGettodolistPage() throws Exception {
+		public Page<TodoItem> getTodolistPage() throws Exception {
 			HttpInvoker.HttpResponse httpResponse =
-				getTodolistGettodolistPageHttpResponse();
+				getTodolistPageHttpResponse();
 
 			String content = httpResponse.getContent();
 
@@ -109,7 +123,7 @@ public interface TodoItemResource {
 			}
 		}
 
-		public HttpInvoker.HttpResponse getTodolistGettodolistPageHttpResponse()
+		public HttpInvoker.HttpResponse getTodolistPageHttpResponse()
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -137,6 +151,141 @@ public interface TodoItemResource {
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
 						"/o/todo-list-restbuild/v1.0/todolist/gettodolist");
+
+			httpInvoker.userNameAndPassword(
+				_builder._login + ":" + _builder._password);
+
+			return httpInvoker.invoke();
+		}
+
+		public Page<TodoItem> patchTodolistMarkItemDoneTodoItemPage(
+				Long todoItemId)
+			throws Exception {
+
+			HttpInvoker.HttpResponse httpResponse =
+				patchTodolistMarkItemDoneTodoItemPageHttpResponse(todoItemId);
+
+			String content = httpResponse.getContent();
+
+			_logger.fine("HTTP response content: " + content);
+
+			_logger.fine("HTTP response message: " + httpResponse.getMessage());
+			_logger.fine(
+				"HTTP response status code: " + httpResponse.getStatusCode());
+
+			try {
+				return Page.of(content, TodoItemSerDes::toDTO);
+			}
+			catch (Exception e) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response: " + content, e);
+
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+		}
+
+		public HttpInvoker.HttpResponse
+				patchTodolistMarkItemDoneTodoItemPageHttpResponse(
+					Long todoItemId)
+			throws Exception {
+
+			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			httpInvoker.body(todoItemId.toString(), "application/json");
+
+			if (_builder._locale != null) {
+				httpInvoker.header(
+					"Accept-Language", _builder._locale.toLanguageTag());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._headers.entrySet()) {
+
+				httpInvoker.header(entry.getKey(), entry.getValue());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._parameters.entrySet()) {
+
+				httpInvoker.parameter(entry.getKey(), entry.getValue());
+			}
+
+			httpInvoker.httpMethod(HttpInvoker.HttpMethod.PATCH);
+
+			httpInvoker.path(
+				_builder._scheme + "://" + _builder._host + ":" +
+					_builder._port +
+						"/o/todo-list-restbuild/v1.0/todolist/markItemDone/{todoItemId}");
+
+			httpInvoker.path("todoItemId", todoItemId);
+
+			httpInvoker.userNameAndPassword(
+				_builder._login + ":" + _builder._password);
+
+			return httpInvoker.invoke();
+		}
+
+		public Page<TodoItem> getTodolistMarkItemUndoTodoItemPage(
+				Long todoItemId)
+			throws Exception {
+
+			HttpInvoker.HttpResponse httpResponse =
+				getTodolistMarkItemUndoTodoItemPageHttpResponse(todoItemId);
+
+			String content = httpResponse.getContent();
+
+			_logger.fine("HTTP response content: " + content);
+
+			_logger.fine("HTTP response message: " + httpResponse.getMessage());
+			_logger.fine(
+				"HTTP response status code: " + httpResponse.getStatusCode());
+
+			try {
+				return Page.of(content, TodoItemSerDes::toDTO);
+			}
+			catch (Exception e) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response: " + content, e);
+
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+		}
+
+		public HttpInvoker.HttpResponse
+				getTodolistMarkItemUndoTodoItemPageHttpResponse(Long todoItemId)
+			throws Exception {
+
+			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			httpInvoker.body(todoItemId.toString(), "application/json");
+
+			if (_builder._locale != null) {
+				httpInvoker.header(
+					"Accept-Language", _builder._locale.toLanguageTag());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._headers.entrySet()) {
+
+				httpInvoker.header(entry.getKey(), entry.getValue());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._parameters.entrySet()) {
+
+				httpInvoker.parameter(entry.getKey(), entry.getValue());
+			}
+
+			httpInvoker.httpMethod(HttpInvoker.HttpMethod.PATCH);
+
+			httpInvoker.path(
+				_builder._scheme + "://" + _builder._host + ":" +
+					_builder._port +
+						"/o/todo-list-restbuild/v1.0/todolist/markItemUndo/{todoItemId}");
+
+			httpInvoker.path("todoItemId", todoItemId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
