@@ -9,9 +9,9 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.headless.common.spi.service.context.ServiceContextRequestUtil;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.todolist.resetbuild.dto.v1_0.TodoItem;
+import com.liferay.todolist.resetbuild.dto.v1_0.TodoItemRequest;
 import com.liferay.todolist.resetbuild.resource.v1_0.TodoItemResource;
 import com.liferay.todolist.service.TodoItemLocalService;
 
@@ -19,10 +19,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PATCH;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -150,6 +153,30 @@ public class TodoItemResourceImpl extends BaseTodoItemResourceImpl {
 		_todoItemLocalService.unDoneTodoItem(todoItemId, null);
 		return Page.of(Collections.emptyList());
 	}
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'POST' 'http://localhost:8080/o/todo-list-restbuild/v1.0/todolist/addTodoItem'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@Consumes({"application/json", "application/xml"})
+	@Operation(description = "Create a new todoItem.")
+	@POST
+	@Path("/todolist/addTodoItem")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {})
+	public TodoItem postTodolistAddTodoItemPage(
+			TodoItemRequest todoItemRequest)
+		throws Exception {
+		
+		_todoItemLocalService.addTodoItem(
+				todoItemRequest.getTitle(), 
+				todoItemRequest.getDescription(),
+				todoItemRequest.getUserName(),
+				todoItemRequest.getDueDate());
+
+		return new TodoItem();
+	}
 	
 	private Locale _getDefaultLocale(long groupId) throws Exception {
 		Group group = _groupLocalService.getGroup(groupId);
@@ -163,6 +190,7 @@ public class TodoItemResourceImpl extends BaseTodoItemResourceImpl {
 
 		return LocaleUtil.getSiteDefault();
 	}
+	
 	
 	@Reference
 	private CompanyService _companyService;

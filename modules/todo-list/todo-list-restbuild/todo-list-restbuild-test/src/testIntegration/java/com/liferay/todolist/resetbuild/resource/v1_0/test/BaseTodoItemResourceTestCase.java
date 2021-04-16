@@ -198,6 +198,25 @@ public abstract class BaseTodoItemResourceTestCase {
 		Assert.assertTrue(false);
 	}
 
+	@Test
+	public void testPostTodolistAddTodoItemPage() throws Exception {
+		TodoItem randomTodoItem = randomTodoItem();
+
+		TodoItem postTodoItem = testPostTodolistAddTodoItemPage_addTodoItem(
+			randomTodoItem);
+
+		assertEquals(randomTodoItem, postTodoItem);
+		assertValid(postTodoItem);
+	}
+
+	protected TodoItem testPostTodolistAddTodoItemPage_addTodoItem(
+			TodoItem todoItem)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

@@ -19,13 +19,19 @@ import com.liferay.portal.kernel.dao.orm.Disjunction;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.CompanyService;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.persistence.GroupUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.todolist.model.TodoItem;
 import com.liferay.todolist.service.base.TodoItemLocalServiceBaseImpl;
@@ -302,6 +308,59 @@ public class TodoItemLocalServiceImpl extends TodoItemLocalServiceBaseImpl {
 		return dynamicQuery;
 	}
 	
+	@Override
+	public void addTodoItem(String title,
+			String description,
+			String userName,
+			Date dueDate) {
+		
+		System.out.println("Local Service called.");
+		
+		Company company;
+		try {
+			company = _companyService.getCompanyById(PortalUtil.getDefaultCompanyId());
+			List<Group> groups = _groupLocalService.getGroups(company.getCompanyId(), 0, true);
+			
+
+			// Generate primary key for the item.
+			long todoItemId = counterLocalService.increment(TodoItem.class.getName());
+			// Create TodoItem.
+			TodoItem todoItem = createTodoItem(todoItemId);
+
+			// Populate fields.
+			todoItem.setGroupId(groups.get(0).getGroupId());
+			todoItem.setCompanyId(company.getCompanyId());
+			todoItem.setUserId(1);
+			todoItem.setUserName(userName);
+			todoItem.setCreateDate(new Date());
+			todoItem.setModifiedDate(new Date());
+
+			todoItem.setTitle(title);
+			Map<Locale, String> descriptionMap = HashMapBuilder.put(
+					LocaleUtil.getSiteDefault(), description).build();
+			todoItem.setDescriptionMap(descriptionMap );
+			todoItem.setDueDate(dueDate);
+			
+			todoItem.setProgress(0.1); // default 0%dd
+			todoItem.setDoneFlag(false); // default false;
+			todoItem.setMemo(""); // default ""
+
+			// Persist todoItem to database.
+			todoItem = super.addTodoItem(todoItem);
+			
+		} catch (PortalException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
 	@Reference
 	TodoItemValidator _todoItemValidator;
+	
+	@Reference
+	private CompanyService _companyService;
+	@Reference
+	private GroupLocalService _groupLocalService;
+
 }

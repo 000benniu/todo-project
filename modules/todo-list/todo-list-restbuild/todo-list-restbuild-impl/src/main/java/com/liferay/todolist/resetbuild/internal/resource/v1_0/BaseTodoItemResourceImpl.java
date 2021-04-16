@@ -20,6 +20,7 @@ import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 import com.liferay.todolist.resetbuild.dto.v1_0.TodoItem;
+import com.liferay.todolist.resetbuild.dto.v1_0.TodoItemRequest;
 import com.liferay.todolist.resetbuild.resource.v1_0.TodoItemResource;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,8 +43,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import javax.validation.constraints.NotNull;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PATCH;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -117,6 +120,24 @@ public abstract class BaseTodoItemResourceImpl
 		throws Exception {
 
 		return Page.of(Collections.emptyList());
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'POST' 'http://localhost:8080/o/todo-list-restbuild/v1.0/todolist/addTodoItem' -d $'{"description": ___, "dueDate": ___, "title": ___, "userName": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 */
+	@Override
+	@Consumes({"application/json", "application/xml"})
+	@Operation(description = "Create a new todoItem.")
+	@POST
+	@Path("/todolist/addTodoItem")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {})
+	public TodoItem postTodolistAddTodoItemPage(TodoItemRequest todoItemRequest)
+		throws Exception {
+
+		return new TodoItem();
 	}
 
 	@Override

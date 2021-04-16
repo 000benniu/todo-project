@@ -6,7 +6,6 @@ components:
         todoItemId:
           format: int64
           type: integer
-
         groupId:
           format: int64
           type: integer
@@ -18,7 +17,6 @@ components:
         createDate:
           format: date-time
           type: string
-
         title:
           type: string
         description:
@@ -32,7 +30,19 @@ components:
           type: string
         memo:
           type: string
-        
+      type: object
+    TodoItemRequest:
+      description: Add todo item's request schema
+      properties:
+        userName:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        dueDate:
+          format: date-time
+          type: string
 info:
     description:
         "TodoListRestbuild REST API. A Java client JAR is available for use with the group ID 'com.liferay', artifact ID
@@ -108,3 +118,26 @@ paths:
                 items:
                   $ref: "#/components/schemas/TodoItem"
           description: "Item un-do completed."
+  "/todolist/addTodoItem":
+    post:
+      description:
+          Create a new todoItem.
+      operationId: postTodolistAddTodoItemPage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TodoItemRequest"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/TodoItemRequest"
+      responses:
+        "204":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TodoItem"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/TodoItem"
+          description: "New todo item added"

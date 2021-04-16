@@ -1,11 +1,7 @@
 <template>
   <div>
     <h1>Todo-List</h1>
-    <p>A simple todo list.</p>
-
-    <h1>
-      <a @click="() => this.loadTodoList()">Refresh</a>
-    </h1>
+    <p>A simple todo list. <a @click="() => this.loadTodoList()">Refresh</a></p>
 
     <div class="table-responsive">
       <table class="table table-striped">
@@ -17,6 +13,7 @@
             <th class="table-cell-expand">Description</th>
             <th class="table-cell-expand">Created user</th>
             <th>DueDate</th>
+            <th></th>
           </tr>
         </thead>
         <tr v-bind:key="todoItem.todoItmeId" v-for="todoItem in todolist" :class="todoItem.doneFlag?'done-text':''">
@@ -28,6 +25,26 @@
             <td class="table-cell-expand">{{ todoItem.description }}</td>
             <td class="table-cell-expand">{{ todoItem.userName }}</td>
             <td>{{ todoItem.dueDate }}</td>
+            <th></th>
+        </tr>
+        <tr>
+            <td/>
+            <td/>
+            <td>
+                <input type="textbox" v-model="title" />
+            </td>
+            <td>
+                <input type="textbox" v-model="description"/>
+            </td>
+            <td>
+                <input type="textbox" v-model="userName"/>
+            </td>
+            <td>
+                <input type="textbox" v-model="dueDate"/>
+            </td>
+            <td>
+                <button type="button" @click="() => this.addThisTodoItem()">+</button>
+            </td>
         </tr>
       </table>
     </div>
@@ -35,12 +52,12 @@
 </template>
 
 <script>
-import { gettodolist, todoItemDone, todoItemUndo } from "../client/rest-client";
+import { getTodolist, todoItemDone, todoItemUndo, addTodoItem } from "../client/rest-client";
 
 export default {
   methods: {
     loadTodoList: function () {
-      gettodolist()
+      getTodolist()
         .then((data) => {
           this.todolist = data.items;
         })
@@ -63,16 +80,35 @@ export default {
                 });
         }
     },
+    addThisTodoItem: function () {
+      addTodoItem(this.title, this.description, this.userName, this.dueDate)
+        .then(()=> {
+                this.loadTodoList();
+                this.title = '';
+                this.description = '';
+                this.userName = '';
+                this.dueDate = '';
+            }
+        )
+        .catch((err) => {
+          this.$emit("error", err);
+        });
+    },
   },
   data() {
     return {
       todolist: [],
+      title: '',
+      description: '',
+      userName: '',
+      dueDate: ''
     };
   },
   async mounted() {
     this.loadTodoList();
   },
-  props: {},
+  props: {
+  },
 };
 </script>
 

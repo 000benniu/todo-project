@@ -10,6 +10,7 @@ import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
 import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.todolist.resetbuild.dto.v1_0.TodoItem;
+import com.liferay.todolist.resetbuild.dto.v1_0.TodoItemRequest;
 import com.liferay.todolist.resetbuild.resource.v1_0.TodoItemResource;
 
 import java.util.function.BiFunction;
@@ -70,6 +71,18 @@ public class Mutation {
 
 				return paginationPage.getItems();
 			});
+	}
+
+	@GraphQLField(description = "Create a new todoItem.")
+	public TodoItem createTodolistAddTodoItemPage(
+			@GraphQLName("todoItemRequest") TodoItemRequest todoItemRequest)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_todoItemResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			todoItemResource -> todoItemResource.postTodolistAddTodoItemPage(
+				todoItemRequest));
 	}
 
 	private <T, R, E1 extends Throwable, E2 extends Throwable> R

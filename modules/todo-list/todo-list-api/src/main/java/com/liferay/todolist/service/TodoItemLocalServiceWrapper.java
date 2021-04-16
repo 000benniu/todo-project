@@ -16,6 +16,8 @@ package com.liferay.todolist.service;
 
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
+import java.util.Date;
+
 /**
  * Provides a wrapper for {@link TodoItemLocalService}.
  *
@@ -511,6 +513,14 @@ public class TodoItemLocalServiceWrapper
 	@Override
 	public void setWrappedService(TodoItemLocalService todoItemLocalService) {
 		_todoItemLocalService = todoItemLocalService;
+	}
+
+	@Override
+	public void addTodoItem(String title,
+			String description,
+			String userName,
+			Date dueDate) {
+		_todoItemLocalService.addTodoItem(title, description, userName, dueDate);
 	}
 
 	private TodoItemLocalService _todoItemLocalService;

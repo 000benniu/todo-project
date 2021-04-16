@@ -5,6 +5,7 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.todolist.resetbuild.dto.v1_0.TodoItem;
+import com.liferay.todolist.resetbuild.dto.v1_0.TodoItemRequest;
 
 import java.util.Locale;
 
@@ -39,6 +40,9 @@ public interface TodoItemResource {
 		throws Exception;
 
 	public Page<TodoItem> getTodolistMarkItemUndoTodoItemPage(Long todoItemId)
+		throws Exception;
+
+	public TodoItem postTodolistAddTodoItemPage(TodoItemRequest todoItemRequest)
 		throws Exception;
 
 	public default void setContextAcceptLanguage(

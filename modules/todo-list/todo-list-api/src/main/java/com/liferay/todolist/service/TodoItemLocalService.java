@@ -368,4 +368,9 @@ public interface TodoItemLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public TodoItem updateTodoItem(TodoItem todoItem);
 
+	public void addTodoItem(String title,
+			String description,
+			String userName,
+			Date dueDate);
+
 }
