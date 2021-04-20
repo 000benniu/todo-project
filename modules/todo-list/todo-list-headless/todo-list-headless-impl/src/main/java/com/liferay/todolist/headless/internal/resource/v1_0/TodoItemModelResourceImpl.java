@@ -15,6 +15,9 @@ import com.liferay.todolist.headless.resource.v1_0.TodoItemModelResource;
 import com.liferay.todolist.model.TodoItem;
 import com.liferay.todolist.service.TodoItemService;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 
@@ -24,7 +27,12 @@ import org.osgi.service.component.annotations.ServiceScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 /**
  * @author ben
  */
@@ -39,42 +47,28 @@ public class TodoItemModelResourceImpl extends BaseTodoItemModelResourceImpl {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/todo-list-headless/v1.0/todoItems'  -u 'test@liferay.com:test'
 	 */
-	@Override
-//	@GET
-//	@Operation(
-//		description = "Retrieves the list of todoItems. Results can be paginated, filtered, searched, and sorted."
-//	)
-//	@Parameters(
-//		value = {
-//			@Parameter(in = ParameterIn.QUERY, name = "search"),
-//			@Parameter(in = ParameterIn.QUERY, name = "filter"),
-//			@Parameter(in = ParameterIn.QUERY, name = "page"),
-//			@Parameter(in = ParameterIn.QUERY, name = "pageSize"),
-//			@Parameter(in = ParameterIn.QUERY, name = "sort")
-//		}
-//	)
-//	@Path("/todoItems")
-//	@Produces({"application/json", "application/xml"})
-//	@Tags(value = {@Tag(name = "TodoItemModel")})
+	@GET
+	@Operation(
+		description = "Retrieves the list of todoItems. Results can be paginated, filtered, searched, and sorted."
+	)
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.QUERY, name = "search"),
+			@Parameter(in = ParameterIn.QUERY, name = "filter"),
+			@Parameter(in = ParameterIn.QUERY, name = "page"),
+			@Parameter(in = ParameterIn.QUERY, name = "pageSize"),
+			@Parameter(in = ParameterIn.QUERY, name = "sort")
+		}
+	)
+	@Path("/todoItems")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "TodoItemModel")})
 	public Page<TodoItemModel> getTodoItemModelsPage(
 			@Parameter(hidden = true) @QueryParam("search") String search,
 			@Context Filter filter, @Context Pagination pagination,
 			@Context Sort[] sorts)
 		throws Exception {
 		try {
-			Page<Object> result1 = SearchUtil.search(
-					null,
-					booleanQuery -> {
-						// does nothing, we just need the UnsafeConsumer<BooleanQuery, Exception> method
-					},
-					filter, TodoItem.class, search, pagination, 
-					queryConfig -> queryConfig.setSelectedFieldNames(
-							Field.ENTRY_CLASS_PK),
-					searchContext -> searchContext.setCompanyId(
-							contextCompany.getCompanyId()),
-					sorts, 
-					null);
-			System.out.print("Got result1");
 			
 			return SearchUtil.search(
 					booleanQuery -> {
@@ -90,7 +84,7 @@ public class TodoItemModelResourceImpl extends BaseTodoItemModelResourceImpl {
 									GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)))),
 					sorts);
 		} catch (Exception e) {
-			_log.error("Error listing vitamins: " + e.getMessage(), e);
+			_log.error("Error listing todoItems >>> " + e.getMessage(), e);
 
 			throw e;
 		}
@@ -102,7 +96,7 @@ public class TodoItemModelResourceImpl extends BaseTodoItemModelResourceImpl {
 			group = Long.toString(todoItem.getGroupId());
 			description = todoItem.getDescription();
 			todoItemId = Long.toString(todoItem.getTodoItemId());
-			creator = CreatorUtil.toCreator(_portal, _userLocalService.getUser(todoItem.getUserId()));
+			//creator = CreatorUtil.toCreator(_portal, _userLocalService.getUser(todoItem.getUserId()));
 			title = todoItem.getTitle();
 			progress = todoItem.getProgress();
 			memo = todoItem.getMemo();
