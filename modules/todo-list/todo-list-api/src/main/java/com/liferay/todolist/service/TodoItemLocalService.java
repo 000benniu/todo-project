@@ -71,6 +71,9 @@ public interface TodoItemLocalService
 			Date dueDate, ServiceContext serviceContext)
 		throws PortalException;
 
+	public void addTodoItem(
+		String title, String description, String userName, Date dueDate);
+
 	/**
 	 * Adds the todo item to the database. Also notifies the appropriate model listeners.
 	 *
@@ -367,10 +370,5 @@ public interface TodoItemLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public TodoItem updateTodoItem(TodoItem todoItem);
-
-	public void addTodoItem(String title,
-			String description,
-			String userName,
-			Date dueDate);
 
 }

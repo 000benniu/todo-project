@@ -48,6 +48,13 @@ public class TodoItemLocalServiceUtil {
 			groupId, title, descriptionMap, dueDate, serviceContext);
 	}
 
+	public static void addTodoItem(
+		String title, String description, String userName,
+		java.util.Date dueDate) {
+
+		getService().addTodoItem(title, description, userName, dueDate);
+	}
+
 	/**
 	 * Adds the todo item to the database. Also notifies the appropriate model listeners.
 	 *
