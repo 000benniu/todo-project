@@ -1,3 +1,3 @@
 Bundle-Name: todo-list-headless-client
-Bundle-SymbolicName: com.liferay.todolist.client
+Bundle-SymbolicName: com.liferay.todolist.headless.client
 Bundle-Version: 1.0.0

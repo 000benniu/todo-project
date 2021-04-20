@@ -1,4 +1,4 @@
 Bundle-Name: todo-list-headless-test
-Bundle-SymbolicName: com.liferay.todolist.test
+Bundle-SymbolicName: com.liferay.todolist.headless.test
 Bundle-Version: 1.0.0
--includeresource: com.liferay.todolist.client.jar=../todo-list-headless-client/build/libs/com.liferay.todolist.client-1.0.0.jar;lib:=true
+-includeresource: com.liferay.todolist.headless.client.jar=../todo-list-headless-client/build/libs/com.liferay.todolist.headless.client-1.0.0.jar;lib:=true

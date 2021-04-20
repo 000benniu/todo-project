@@ -38,4 +38,4 @@ dependencies {
 	compileOnly 'org.slf4j:slf4j-api'
 }
 
-group = "com.liferay.todolist"
+group = "com.liferay.todolist.headless"
