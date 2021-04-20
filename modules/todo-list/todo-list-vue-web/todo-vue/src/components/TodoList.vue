@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Todo-List</h1>
-    <p>A simple todo list. <a @click="() => this.loadTodoList()">Refresh</a></p>
+    <p>A simple todo list. <a @click="() => this.loadTodoList()">[Refresh]</a></p>
 
     <div class="table-responsive">
       <table class="table table-striped">
@@ -128,7 +128,7 @@ li {
   margin: 0 10px;
 }
 a {
-  color: #04b654;
+  color: #00813a;
 }
 tr:nth-child(even) {
   background-color: #f2f2f2;

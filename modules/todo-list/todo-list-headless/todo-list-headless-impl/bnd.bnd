@@ -1,0 +1,3 @@
+Bundle-Name: todo-list-headless-impl
+Bundle-SymbolicName: com.liferay.todolist.impl
+Bundle-Version: 1.0.0
