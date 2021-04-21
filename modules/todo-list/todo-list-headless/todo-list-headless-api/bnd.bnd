@@ -1,0 +1,6 @@
+Bundle-Name: todo-list-headless-api
+Bundle-SymbolicName: com.liferay.todolist.headless.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.todolist.headless.dto.v1_0,\
+	com.liferay.todolist.headless.resource.v1_0

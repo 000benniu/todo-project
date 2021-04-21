@@ -1,0 +1,9 @@
+apiDir: "../todo-list-headless-api/src/main/java"
+apiPackagePath: "com.liferay.todolist.headless"
+application:
+    baseURI: "/todo-list-headless"
+    className: "TodoListHeadlessApplication"
+    name: "TodoListHeadless"
+author: "ben"
+clientDir: "../todo-list-headless-client/src/main/java"
+testDir: "../todo-list-headless-test/src/testIntegration/java"
