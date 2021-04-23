@@ -8,6 +8,7 @@
     TodoItem todoItem = (TodoItem)request.getAttribute("todoItem");                    
 %>
 
+<h2>---in abstract.jsp---</h2>
 <aui:a cssClass="title-link" href="<%= viewEntryURL %>">
     <h3 class="title"><%= HtmlUtil.escape(todoItem.getTitle()) %></h3>
 </aui:a>

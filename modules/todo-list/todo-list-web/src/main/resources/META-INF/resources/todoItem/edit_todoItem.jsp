@@ -42,7 +42,7 @@
              <aui:fieldset>
                  <%-- Title field. --%>
                  <aui:input name="title">
-	                 <aui:validator errorMessage="error.assignment-title-format" name="custom">
+	                 <aui:validator errorMessage="error.todoItem-title-format" name="custom">
 					     function(val, fieldNode, ruleValue) {
 					         var wordExpression = 
 					             new RegExp("^[^\\[\\]\\^$<>]*$");

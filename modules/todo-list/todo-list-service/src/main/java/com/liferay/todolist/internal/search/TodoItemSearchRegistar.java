@@ -14,13 +14,16 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 @Component(
-    immediate = true
+    immediate = true,
+    service =  {TodoItemSearchRegistar.class}
 )
 public class TodoItemSearchRegistar {
 
     @Activate
     protected void activate(BundleContext bundleContext) {
     	
+    	// will be called after the deploy.
+    	System.out.println("Register for the class. START !!");
         _serviceRegistration = modelSearchRegistrarHelper.register(
             TodoItem.class, bundleContext,
             modelSearchDefinition -> {
@@ -39,6 +42,7 @@ public class TodoItemSearchRegistar {
                 modelSearchDefinition.setModelSummaryContributor(
                     modelSummaryContributor);
             });
+    	System.out.println("Register for the class. DONE");
     }
 
     @Deactivate

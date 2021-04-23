@@ -34,7 +34,7 @@ public class DeleteTodoItemMVCActionCommand extends BaseMVCActionCommand{
 
         try {
 
-            // Call service to delete the assignment.
+            // Call service to delete the todoItem.
         	_todoItemService.deleteTodoItem(todoItemId);
 			SessionMessages.add(actionRequest, "todoItemDeleted");
 

@@ -23,6 +23,8 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.search.Indexable;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.CompanyService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -82,7 +84,10 @@ public class TodoItemLocalServiceImpl extends TodoItemLocalServiceBaseImpl {
 				ContentTypes.TEXT_HTML, todoItem.getTitle(), todoItem.getDescription(serviceContext.getLocale()), 
 				null, null, null, 0, 0, serviceContext.getAssetPriority());
 	}
-	 
+	
+	@Indexable(
+			type = IndexableType.REINDEX
+	)
 	public TodoItem addTodoItem(long groupId, 
 			String title,
 			Map<Locale, String> descriptionMap, 
@@ -224,7 +229,7 @@ public class TodoItemLocalServiceImpl extends TodoItemLocalServiceBaseImpl {
 	public List<TodoItem> getTodoItemsByGroupId(long groupId,
 			int start,
 			int end) {
-
+		
 		return todoItemPersistence.findByGroupId(groupId, start, end);
 	}
 	

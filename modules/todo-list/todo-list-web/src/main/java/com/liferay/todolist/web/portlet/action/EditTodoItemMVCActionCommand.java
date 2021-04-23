@@ -59,7 +59,7 @@ public class EditTodoItemMVCActionCommand extends BaseMVCActionCommand {
 
         try {
 
-            // Call the service to update the assignment
+            // Call the service to update the todoItem
 			_todoItemService.updateTodoItem(todoItemId, title, descriptionMap, dueDate, memo, progress, doneFlag,
 					serviceContext);
 			

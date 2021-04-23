@@ -1,7 +1,11 @@
 package com.liferay.todolist.headless.internal.resource.v1_0;
 
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONSerializer;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.service.CompanyService;
@@ -19,6 +23,7 @@ import com.liferay.todolist.model.TodoItem;
 import com.liferay.todolist.service.TodoItemService;
 
 import java.util.Collections;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.ws.rs.GET;
@@ -76,27 +81,46 @@ public class TodoItemModelResourceImpl extends BaseTodoItemModelResourceImpl {
 		throws Exception {
 		try {
 
-			Company company;
-			company = _companyService.getCompanyById(PortalUtil.getDefaultCompanyId());
-			return Page.of(
-					_todoItemService.getTodoItemsByGroupId(company.getGroupId())
-					.stream()
-					.map(x -> _toTodoItemModel(x))
-					.collect(Collectors.toList())
-					);
+//			Company company;
+//			company = _companyService.getCompanyById(PortalUtil.getDefaultCompanyId());
+//			return Page.of(
+//					_todoItemService.getTodoItemsByGroupId(company.getGroupId())
+//					.stream()
+//					.map(x -> _toTodoItemModel(x))
+//					.collect(Collectors.toList())
+//					);
+
+//			Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+//			for(Indexer<?> idx : indexers){
+//				   System.out.println(idx.getClassName());
+//			}
+			
+			Indexer<?> indexer = IndexerRegistryUtil.getIndexer(TodoItem.class);
+			System.out.println("got indexer");
+			
+			return SearchUtil.search(
+					Collections.emptyMap(), // actions?
+					booleanQuery -> {
+						// does nothing, we just need the UnsafeConsumer<BooleanQuery, Exception> method
+					},
+					filter, TodoItem.class, search, pagination,
+					queryConfig -> queryConfig.setSelectedFieldNames(Field.ENTRY_CLASS_PK),
+					searchContext -> searchContext.setCompanyId(contextCompany.getCompanyId()),
+					sorts, 
+					document -> _toTodoItemModel(
+								_todoItemService.getTodoItem(GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)))
+							)
+			);
 			
 //			return SearchUtil.search(
 //					booleanQuery -> {
 //						// does nothing, we just need the UnsafeConsumer<BooleanQuery, Exception> method
-//					},
+//					}, 
 //					filter, TodoItem.class, search, pagination,
-//					queryConfig -> queryConfig.setSelectedFieldNames(
-//							Field.ENTRY_CLASS_PK),
-//					searchContext -> searchContext.setCompanyId(
-//							contextCompany.getCompanyId()),
+//					queryConfig -> queryConfig.setSelectedFieldNames(Field.ENTRY_CLASS_PK),
+//					searchContext -> searchContext.setCompanyId(contextCompany.getCompanyId()),
 //					document -> _toTodoItemModel(
-//							_todoItemService.getTodoItem(
-//									GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)))),
+//							_todoItemService.getTodoItem(GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)))),
 //					sorts);
 		} catch (Exception e) {
 			_log.error("Error listing todoItems >>> " + e.getMessage(), e);

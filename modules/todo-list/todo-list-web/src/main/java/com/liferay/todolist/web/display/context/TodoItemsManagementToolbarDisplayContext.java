@@ -49,7 +49,7 @@ public class TodoItemsManagementToolbarDisplayContext extends BaseManagementTool
 	 */
 	public CreationMenu getCreationMenu() {
 
-	     // Check if user has permissions to add assignments.
+	     // Check if user has permissions to add todoItems.
 
 	     if (!TodoItemTopLevelPermission.contains(
 	             _themeDisplay.getPermissionChecker(),
